@@ -5,3 +5,4 @@ __pycache__/
 assets/instagram/*/stories/
 assets/instagram/*/stories.json
 .superpowers/
+_site/
