@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="{{t:meta.lang}}" data-root="{{ROOT}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{t:shop.title}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="canonical" href="{{CANONICAL}}">
+<meta name="theme-color" content="#060A20">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="{{t:meta.og_locale}}">
+<meta property="og:locale:alternate" content="{{t:meta.og_locale_alt}}">
+<meta property="og:site_name" content="Gems Hunter">
+<meta property="og:title" content="{{a:shop.og_title}}">
+<meta property="og:description" content="{{a:shop.og_description}}">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg">
+<link rel="icon" href="{{ROOT}}assets/img/logo-hunter.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ROOT}}assets/css/main.css">
+<link rel="stylesheet" href="{{ROOT}}assets/css/products.css">
+<script type="application/ld+json">{{JSONLD}}</script>
+</head>
+<body class="no-js shop-page">
+<div class="cursor-light" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="{{HOME}}"><img src="{{ROOT}}assets/img/logo-hunter.webp" alt="" width="38" height="38">GEMS HUNTER</a>
+  <ul>
+    <li><a href="{{HOME}}">{{t:nav.home}}</a></li>
+    <li><a href="./" aria-current="page">{{t:nav.products}}</a></li>
+    <li><a href="{{HOME}}#chon-da">{{t:nav.picker}}</a></li>
+    <li><a href="{{HOME}}#tiem">{{t:nav.about}}</a></li>
+  </ul>
+  <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:nav.order}}</a>
+</header>
+
+<main>
+  <section class="shop-hero">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{HOME}}">{{t:nav.home}}</a><span aria-hidden="true">/</span><span aria-current="page">{{t:nav.products}}</span></nav>
+    <h1 class="rv">{{t:shop.h1}}</h1>
+    <p class="lede rv" style="--d:1">{{LEDE}}</p>
+  </section>
+
+  <section class="shop" aria-labelledby="all-h">
+    <h2 id="all-h" class="vh">{{t:shop.all}}</h2>
+    <div class="toolbar" role="search">
+      <label class="search"><span class="vh">{{t:shop.search_label}}</span>
+        <input type="search" id="q" placeholder="{{a:shop.search_ph}}" autocomplete="off">
+      </label>
+      <label class="select"><span class="vh">{{t:shop.type_label}}</span>
+        <select id="type"><option value="">{{t:shop.type_all}}</option>{{TYPE_OPTIONS}}</select>
+      </label>
+    </div>
+    <div class="fchips" role="group" aria-label="{{a:shop.stone_label}}">
+      <button type="button" class="fchip" data-f-stone="" aria-pressed="true">{{t:shop.all_stones}} <span>{{COUNT}}</span></button>
+      {{STONE_CHIPS}}
+    </div>
+    <p class="count" id="count" aria-live="polite">{{COUNT_TEXT}}</p>
+
+    <ul class="grid" id="grid">
+{{CARDS}}
+    </ul>
+    <p class="empty" id="empty" hidden>{{t:shop.empty}}</p>
+    <div class="more"><button type="button" class="btn ghost" id="more" hidden>{{t:shop.more}}</button></div>
+  </section>
+
+  <section class="cta-strip">
+    <h2>{{t:shop.cta_h}}</h2>
+    <p>{{t:shop.cta_p}}</p>
+    <div class="row">
+      <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:shop.cta_btn}} <span class="arr">→</span></a>
+    </div>
+  </section>
+</main>
+
+<dialog class="lb" id="lb" aria-labelledby="lb-name">
+  <div class="lb-in">
+    <button type="button" class="lb-x" data-close aria-label="{{a:shop.close}}">×</button>
+    <figure class="lb-media"><img id="lb-img" alt="" width="960" height="1200"></figure>
+    <div class="lb-body">
+      <p class="meta" id="lb-meta"></p>
+      <h2 id="lb-name"></h2>
+      <div class="badges" id="lb-badges"></div>
+      <p class="desc" id="lb-desc"></p>
+      <div class="acts" id="lb-acts"></div>
+    </div>
+  </div>
+</dialog>
+
+{{FOOTER}}
+
+<script type="application/json" id="i18n">{{JS}}</script>
+<script src="{{ROOT}}assets/js/products.js" defer></script>
+</body>
+</html>

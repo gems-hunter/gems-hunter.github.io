@@ -150,83 +150,128 @@ def search_text(*parts):
     return slug_text(t + " " + extra)
 
 TYPE_ORDER = ["Vòng cổ", "Vòng tay", "Nhẫn", "Bông tai", "Mặt dây", "Đá thô", "Trang sức"]
-TYPE_LABEL = {"Trang sức": "Trang sức khác"}
 OTHER_STONE = "Đá khác"
 
-def card(p, i):
+
+def key_of(label):
+    """'Thạch anh tím' -> 'thach-anh-tim' (khoa trong nhom types./stones. cua tu dien)."""
+    return re.sub(r"[^a-z0-9]+", "-", slug_text(label)).strip("-")
+
+
+def label(S, group, vi_value):
+    k = f"{group}.{key_of(vi_value)}"
+    if k not in S:
+        print(f"  ! thieu nhan {k} trong i18n, dung tam '{vi_value}'")
+    return S.get(k, vi_value)
+
+
+def load_en():
+    f = ROOT / "data" / "products.en.json"
+    return json.loads(f.read_text(encoding="utf8")) if f.exists() else {}
+
+
+def localize(p, lang, en_data, S):
+    q = dict(p)
+    stone = p.get("stone") or OTHER_STONE
+    q.update(vi_name=p["name"], vi_type=label(strings("vi"), "types", p["type"]),
+             vi_stone=p.get("stone") or "",
+             type_label=label(S, "types", p["type"]), stone_label=label(S, "stones", stone),
+             has_stone=bool(p.get("stone")))
+    if lang == "en":
+        tr = en_data.get(p["id"])
+        if tr and tr.get("name"):
+            q["name"], q["desc"] = tr["name"], tr.get("desc", "")
+        else:
+            q["_missing_en"] = True
+    return q
+
+
+def card(p, i, lang, S, root):
     e = html.escape
     pid = e(p["id"])
-    stone = p.get("stone") or ""
-    t = TYPE_LABEL.get(p["type"], p["type"])
-    alt = e(f'{p["name"]} — {t.lower()}{" " + stone if stone else ""} | Gems Land')
-    search = e(search_text(p["name"], stone, t, p.get("desc", "")[:120]))
+    t, st = p["type_label"], p["stone_label"]
+    shown_stone = st if p["has_stone"] else ""
+    alt = e(f'{p["name"]} — {t.lower()}{" " + shown_stone if shown_stone else ""} | Gems Hunter')
+    search = e(search_text(p["name"], p["vi_name"], shown_stone, p["vi_stone"], t, p["vi_type"], p.get("desc", "")[:120]))
     sold = p["status"] == "sold"
-    badges = f'<span class="chip">{e(stone)}</span>' if stone else ""
+    badges = f'<span class="chip">{e(shown_stone)}</span>' if shown_stone else ""
     if sold:
-        badges += '<span class="chip sold">Đã có chủ</span>'
+        badges += f'<span class="chip sold">{e(S["shop.sold"])}</span>'
     desc = f'<p class="desc">{e(p["desc"])}</p>' if p.get("desc") else ""
     eager = 'fetchpriority="high"' if i < 4 else 'loading="lazy"'
-    return f'''<li class="item" id="sp-{pid}" data-type="{e(t)}" data-stone="{e(stone or OTHER_STONE)}" data-q="{search}">
+    img = f"{root}assets/img/products/{pid}"
+    ask = S["shop.ask_similar"] if sold else S["shop.ask_available"]
+    return f"""<li class="item" id="sp-{pid}" data-type="{e(t)}" data-stone="{e(st)}" data-q="{search}">
   <article class="pcard">
-    <button class="media" type="button" data-open aria-label="Xem lớn: {e(p["name"])}">
-      <img src="../assets/img/products/{pid}-480.webp" srcset="../assets/img/products/{pid}-480.webp 480w, ../assets/img/products/{pid}-960.webp 960w" sizes="(max-width:700px) 50vw, (max-width:1100px) 33vw, 25vw" width="480" height="600" alt="{alt}" {eager} decoding="async">
+    <button class="media" type="button" data-open aria-label="{e(S['shop.zoom'])}: {e(p['name'])}">
+      <img src="{img}-480.webp" srcset="{img}-480.webp 480w, {img}-960.webp 960w" sizes="(max-width:700px) 50vw, (max-width:1100px) 33vw, 25vw" width="480" height="600" alt="{alt}" {eager} decoding="async">
       <span class="badges">{badges}</span>
     </button>
     <div class="body">
-      <p class="meta">{e(t)}{" · " + e(stone) if stone else ""}</p>
+      <p class="meta">{e(t)}{" · " + e(shown_stone) if shown_stone else ""}</p>
       <h3>{e(p["name"])}</h3>
       {desc}
       <div class="acts">
-        <a class="btn sm" href="https://ig.me/m/_gemsland_" rel="nofollow">{"Hỏi món tương tự" if sold else "Hỏi còn hàng"}</a>
-        <a class="ig" href="{e(p["permalink"])}" rel="nofollow noopener" target="_blank" aria-label="Xem bài gốc trên Instagram">Instagram ↗</a>
+        <a class="btn sm" href="https://ig.me/m/_gems.hunter_" rel="nofollow">{e(ask)}</a>
+        <a class="ig" href="{e(p["permalink"])}" rel="nofollow noopener" target="_blank" aria-label="{e(S['shop.ig_post'])}">Instagram ↗</a>
       </div>
     </div>
   </article>
-</li>'''
+</li>"""
 
-def build_products():
-    data = json.load(open(ROOT / "data" / "products.json", encoding="utf8"))
+
+def product_items():
+    data = json.loads((ROOT / "data" / "products.json").read_text(encoding="utf8"))
     items = [p for p in data if p.get("is_product")]
     for p in items:
         src = ROOT / p["image"]
         save_webp(src, PIMG / f'{p["id"]}-480.webp', 600, 78)
         save_webp(src, PIMG / f'{p["id"]}-960.webp', 1200, 80)
-        with Image.open(PIMG / f'{p["id"]}-480.webp') as im:
-            p["_w"], p["_h"] = im.size
-    types = {}
-    stones = {}
+    return items
+
+
+def build_products(lang):
+    S, path = strings(lang), LANGS[lang]["products"]
+    root = root_for(path)
+    en_data = load_en()
+    items = [localize(p, lang, en_data, S) for p in product_items()]
+    missing = sum(1 for p in items if p.get("_missing_en"))
+    if missing:
+        print(f"  ! thieu ban dich EN: {missing} san pham")
+    e = html.escape
+    types, stones = {}, {}
     for p in items:
-        t = TYPE_LABEL.get(p["type"], p["type"]); types[t] = types.get(t, 0) + 1
-        st = p.get("stone") or OTHER_STONE; stones[st] = stones.get(st, 0) + 1
-    order = sorted((k for k in stones if k != OTHER_STONE), key=lambda k: -stones[k]) + ([OTHER_STONE] if OTHER_STONE in stones else [])
-    stone_chips = "".join(
-        f'<button type="button" class="fchip" data-f-stone="{html.escape(st)}" aria-pressed="false">{html.escape(st)} <span>{stones[st]}</span></button>'
-        for st in order)
-    type_opts = "".join(f'<option value="{html.escape(t)}">{html.escape(t)} ({types[t]})</option>'
-                        for t in [TYPE_LABEL.get(x, x) for x in TYPE_ORDER] if t in types)
-    cards = "\n".join(card(p, i) for i, p in enumerate(items))
-    cards = re.sub(r'width="480" height="600"', lambda m: m.group(0), cards)
-    ld = {
-        "@context": "https://schema.org", "@type": "CollectionPage", "name": "Sản phẩm — Gems Land",
-        "url": f"{SITE_URL}/san-pham/", "inLanguage": "vi",
-        "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Trang chủ", "item": f"{SITE_URL}/"},
-            {"@type": "ListItem", "position": 2, "name": "Sản phẩm", "item": f"{SITE_URL}/san-pham/"}]},
-        "mainEntity": {"@type": "ItemList", "numberOfItems": len(items), "itemListElement": [
-            {"@type": "ListItem", "position": i + 1, "url": f'{SITE_URL}/san-pham/#sp-{p["id"]}', "name": p["name"],
-             "image": f'{SITE_URL}/assets/img/products/{p["id"]}-960.webp'} for i, p in enumerate(items)]},
-    }
-    tpl = (ROOT / "scripts" / "san-pham.template.html").read_text(encoding="utf8")
-    out = (tpl.replace("{{COUNT}}", str(len(items)))
-              .replace("{{STONE_COUNT}}", str(len([k for k in stones if k != OTHER_STONE])))
-              .replace("{{STONE_CHIPS}}", stone_chips)
-              .replace("{{TYPE_OPTIONS}}", type_opts)
-              .replace("{{CARDS}}", cards)
-              .replace("{{SITE_URL}}", SITE_URL)
-              .replace("{{JSONLD}}", json.dumps(ld, ensure_ascii=False)))
-    (ROOT / "san-pham").mkdir(exist_ok=True)
-    (ROOT / "san-pham" / "index.html").write_text(out, encoding="utf8")
-    print(f"  san-pham/index.html: {len(items)} san pham, {len(stones)} loai da")
+        types[p["type_label"]] = types.get(p["type_label"], 0) + 1
+        stones[p["stone_label"]] = stones.get(p["stone_label"], 0) + 1
+    other = label(S, "stones", OTHER_STONE)
+    order = sorted((k for k in stones if k != other), key=lambda k: (-stones[k], k)) + ([other] if other in stones else [])
+    chips = "".join(f'<button type="button" class="fchip" data-f-stone="{e(st)}" aria-pressed="false">{e(st)} <span>{stones[st]}</span></button>' for st in order)
+    type_labels = [label(S, "types", x) for x in TYPE_ORDER]
+    type_opts = "".join(f'<option value="{e(t)}">{e(t)} ({types[t]})</option>' for t in type_labels if t in types)
+    n, ns = len(items), len([k for k in stones if k != other])
+    url = f"{SITE_URL}{path}"
+    ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": S["shop.og_title"],
+          "url": url, "inLanguage": S["meta.lang"],
+          "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": [
+              {"@type": "ListItem", "position": 1, "name": S["nav.home"], "item": SITE_URL + LANGS[lang]["home"]},
+              {"@type": "ListItem", "position": 2, "name": S["nav.products"], "item": url}]},
+          "mainEntity": {"@type": "ItemList", "numberOfItems": n, "itemListElement": [
+              {"@type": "ListItem", "position": i + 1, "url": f'{url}#sp-{p["id"]}', "name": p["name"],
+               "image": f'{SITE_URL}/assets/img/products/{p["id"]}-960.webp'} for i, p in enumerate(items)]}}
+    extra = common_extra(lang, "products", root)
+    extra.update({
+        "DESCRIPTION": e(S["shop.description"].replace("{n}", str(n))),
+        "LEDE": S["shop.lede"].replace("{n}", str(n)).replace("{s}", str(ns)),
+        "COUNT": str(n), "COUNT_TEXT": e(S["js.count"].replace("{n}", str(n))),
+        "STONE_CHIPS": chips, "TYPE_OPTIONS": type_opts,
+        "CARDS": "\n".join(card(p, i, lang, S, root) for i, p in enumerate(items)),
+        "JSONLD": json.dumps(ld, ensure_ascii=False), "JS": i18n.js_payload(S),
+    })
+    tpl = (TPL / "products.html").read_text(encoding="utf8")
+    write_page(path, i18n.render(tpl, S, root, extra))
+    print(f"  {path}: {n} san pham, {len(stones)} loai da")
+    return n
+
 
 def build_seo_files():
     today = date.today().isoformat()
@@ -241,6 +286,6 @@ def build_seo_files():
 if __name__ == "__main__":
     print("Anh trang chu..."); build_home_images()
     print("Trang chu VI/EN..."); [build_home(l) for l in LANGS]
-    print("Trang san pham..."); build_products()
+    print("Trang san pham VI/EN..."); [build_products(l) for l in LANGS]
     print("Sitemap/robots..."); build_seo_files()
     print("Xong.")

@@ -2,6 +2,7 @@
   document.body.classList.remove('no-js');
   var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var I18N=JSON.parse($('#i18n').textContent);
 
   // nav + reveal + cursor light (giong trang chu)
   var nav=$('.nav'); function navState(){ nav.classList.toggle('scrolled', scrollY>40) }
@@ -38,7 +39,7 @@
       if(ok) n++;
       li.hidden=!ok || (ok && n>shown);
     });
-    countEl.textContent=n+' sản phẩm';
+    countEl.textContent=I18N.count.replace('{n}',n);
     more.hidden=n<=shown; empty.hidden=n>0;
     var p=new URLSearchParams();
     if(state.type) p.set('loai',state.type); if(state.stone) p.set('da',state.stone); if(state.q) p.set('q',state.q);
