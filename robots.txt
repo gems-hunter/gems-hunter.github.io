@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /scripts/
 Disallow: /data/
+Disallow: /i18n/
 
 Sitemap: https://gems-hunter.github.io/sitemap.xml

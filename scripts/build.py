@@ -50,10 +50,31 @@ def strings(lang):
     return _STRINGS[lang]
 
 
+def alternates(page):
+    """Cac the hreflang cua mot trang (giong het nhau o moi ban ngon ngu)."""
+    tags = [f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{LANGS[l][page]}">' for l in LANGS]
+    tags.append(f'<link rel="alternate" hreflang="x-default" href="{SITE_URL}{LANGS["vi"][page]}">')
+    return "\n".join(tags)
+
+
+def lang_switch(page, lang, root):
+    """Nut VI · EN tren nav; link sang ban kia co data-lang-switch de JS giu #sp-..."""
+    S = strings(lang)
+    parts = []
+    for l in LANGS:
+        href = link(root, LANGS[l][page])
+        if l == lang:
+            parts.append(f'<a href="{href}" lang="{l}" aria-current="true">{l.upper()}</a>')
+        else:
+            parts.append(f'<a href="{href}" hreflang="{l}" lang="{l}" data-lang-switch>{l.upper()}</a>')
+    return f'<nav class="lang" aria-label="{html.escape(S["nav.lang"])}">' + "".join(parts) + "</nav>"
+
+
 def common_extra(lang, page, root):
     L = LANGS[lang]
     extra = {"SITE_URL": SITE_URL, "CANONICAL": SITE_URL + L[page],
-             "HOME": link(root, L["home"]), "PRODUCTS": link(root, L["products"])}
+             "HOME": link(root, L["home"]), "PRODUCTS": link(root, L["products"]),
+             "ALTERNATES": alternates(page), "LANG_SWITCH": lang_switch(page, lang, root)}
     footer = (TPL / "footer.html").read_text(encoding="utf8")
     extra["FOOTER"] = i18n.render(footer, strings(lang), root, extra)
     return extra
@@ -284,13 +305,18 @@ def build_products(lang):
 
 def build_seo_files():
     today = date.today().isoformat()
-    urls = ["/", "/san-pham/"]
-    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        xml.append(f"  <url><loc>{SITE_URL}{u}</loc><lastmod>{today}</lastmod></url>")
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+    for page in ("home", "products"):
+        for lang in LANGS:
+            xml.append(f"  <url><loc>{SITE_URL}{LANGS[lang][page]}</loc><lastmod>{today}</lastmod>")
+            for l in LANGS:
+                xml.append(f'    <xhtml:link rel="alternate" hreflang="{l}" href="{SITE_URL}{LANGS[l][page]}"/>')
+            xml.append("  </url>")
     xml.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(xml) + "\n", encoding="utf8")
-    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf8")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\nDisallow: /i18n/\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf8")
+
 
 if __name__ == "__main__":
     print("Anh trang chu..."); build_home_images()

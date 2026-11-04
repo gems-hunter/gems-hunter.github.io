@@ -54,6 +54,11 @@
   // mo san pham tu link #sp-xxx
   if(location.hash.indexOf('#sp-')===0){ var li=$(location.hash); if(li){ li.hidden=false; setTimeout(function(){ openItem(li) },300) } }
 
+  // chuyen VI/EN: giu #sp-<ma> de sang ban kia van mo dung mon dang xem
+  $$('[data-lang-switch]').forEach(function(a){ a.addEventListener('click',function(){
+    if(location.hash.indexOf('#sp-')===0) a.href=a.href.split('#')[0]+location.hash;
+  }) });
+
   // lightbox
   var lb=$('#lb');
   function openItem(li){

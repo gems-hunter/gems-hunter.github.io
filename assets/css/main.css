@@ -51,6 +51,11 @@ em{font-style:italic;color:var(--aqua)}
 .nav ul a{text-decoration:none;opacity:.85;transition:opacity .2s,color .2s}
 .nav ul a:hover{opacity:1;color:var(--aqua)}
 .nav .btn{min-height:42px;padding:0 20px;font-size:14px}
+.nav-end{display:flex;align-items:center;gap:18px}
+.lang{display:flex;gap:2px;font:400 12px/1 var(--sans);letter-spacing:.12em}
+.lang a{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;border-radius:999px;text-decoration:none;opacity:.6;transition:opacity .2s,color .2s}
+.lang a:hover{opacity:1;color:var(--aqua)}
+.lang a[aria-current]{opacity:1;color:var(--aqua)}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:4vw;padding:120px var(--m) 80px;overflow:hidden;isolation:isolate}
