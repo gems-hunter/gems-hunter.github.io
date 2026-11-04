@@ -1,0 +1,17 @@
+{
+ "_ghi_chu": "Sua tay danh sach san pham. exclude: ma bai Instagram KHONG phai san pham (anh chat, banner sale, giveaway, anh doi song...). fix: sua truong cho tung ma bai.",
+ "exclude": [
+  "DasPfZIFF7e",
+  "C-jxEMnPLt1",
+  "Ct-p8EuvR0j",
+  "CtjCff5Pke1",
+  "Ctg7iBFPfSy",
+  "DMeqZ7hSPVx"
+ ],
+ "fix": {
+  "De-skEKycjH": {
+   "stone": "Opal",
+   "type": "Trang sức"
+  }
+ }
+}
