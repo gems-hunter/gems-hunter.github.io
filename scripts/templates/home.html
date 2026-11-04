@@ -16,15 +16,24 @@
 <meta property="og:description" content="{{a:meta.og_description}}">
 <meta property="og:url" content="{{CANONICAL}}">
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg">
-<link rel="icon" href="{{ROOT}}assets/img/logo-hunter.webp" type="image/webp">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{a:meta.og_image_alt}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="max-image-preview:large">
+<link rel="icon" href="{{ROOT}}favicon.ico" sizes="48x48">
+<link rel="icon" href="{{ROOT}}assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="{{ROOT}}assets/img/apple-touch-icon.png">
+<link rel="manifest" href="{{ROOT}}site.webmanifest">
 <script type="application/ld+json">{{JSONLD}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ROOT}}assets/css/main.css">
 </head>
-<body class="no-js">
-<div class="cursor-light" aria-hidden="true"></div>
+<body class="no-js" data-page="home">
+<div class="cursor-light" aria-hidden="true" data-persist></div>
 
 <header class="nav">
   <a class="brand" href="#top"><img src="{{ROOT}}assets/img/logo-hunter.webp" alt="" width="636" height="636">GEMS HUNTER</a>
@@ -56,7 +65,7 @@
   <div class="stage rv" style="--d:2">
     <div class="ring" aria-hidden="true"></div>
     <div class="arch" data-fade>
-      <img class="on" src="{{ROOT}}assets/img/aqua-macrame.webp" alt="{{a:home.alt_aqua_macrame}}" width="666" height="818">
+      <img class="on" src="{{ROOT}}assets/img/aqua-macrame.webp" alt="{{a:home.alt_aqua_macrame}}" width="666" height="818" fetchpriority="high">
       <img src="{{ROOT}}assets/img/moonstone-bracelet.webp" alt="{{a:home.alt_moonstone_bracelet}}" width="688" height="909">
       <img src="{{ROOT}}assets/img/eth-opal.webp" alt="{{a:home.alt_eth_opal}}" width="458" height="818">
       <img src="{{ROOT}}assets/img/citrine-pendant.webp" alt="{{a:home.alt_citrine_pendant}}" width="790" height="818">
@@ -208,6 +217,7 @@
 <!-- CTA -->
 <section class="cta" aria-labelledby="cta-h">
   <h2 id="cta-h" class="rv"><span>{{t:home.cta_h_a}}</span><span>{{t:home.cta_h_b}}</span></h2>
+  <div class="glow" aria-hidden="true"></div>
   <div class="moon rv"><img src="{{ROOT}}assets/img/moonstone-bracelet.webp" alt="{{a:home.alt_moonstone_bracelet}}" width="688" height="909" loading="lazy"></div>
   <div class="choice rv" style="--d:1">
     <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:home.cta_btn}} <span class="arr">→</span></a>
@@ -220,6 +230,6 @@
 {{FOOTER}}
 
 <script type="application/json" id="i18n">{{JS}}</script>
-<script src="{{ROOT}}assets/js/main.js" defer></script>
+<script type="module" src="{{ROOT}}assets/js/app.js"></script>
 </body>
 </html>

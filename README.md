@@ -17,6 +17,10 @@ data/products.json               Dữ liệu sản phẩm (sinh tự động t�
 data/overrides.json              SỬA TAY: ẩn bài không phải sản phẩm (exclude), sửa tên/đá/loại món (fix)
 data/products.en.json            SỬA TAY: tên + mô tả tiếng Anh của từng sản phẩm {"<mã bài>": {"name", "desc"}}
 assets/css, assets/js            Style và hiệu ứng (JS đọc chữ từ <script id="i18n"> nhúng trong trang)
+assets/js/app.js                 Điểm vào (module): khởi tạo trang + router chuyển trang không tải lại
+assets/js/router.js              Bấm link nội bộ -> lấy HTML (có cache, tải trước khi rê chuột) -> thay nội dung, nhớ vị trí cuộn
+assets/js/common.js              Nav, drawer, reveal (chạy lại mỗi trang); ánh sáng chuột, chế độ góp ý (chạy một lần)
+assets/js/main.js, products.js   JS riêng của trang chủ / trang sản phẩm: init(signal) trả về hàm dọn dẹp
 assets/img/                      Ảnh webp đã tối ưu (sinh tự động)
 assets/instagram/                Ảnh gốc tải từ Instagram + posts.json
 scripts/extract_products.py      Caption Instagram + overrides.json -> data/products.json

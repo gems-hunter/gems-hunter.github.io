@@ -16,7 +16,16 @@
 <meta property="og:description" content="{{a:shop.og_description}}">
 <meta property="og:url" content="{{CANONICAL}}">
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg">
-<link rel="icon" href="{{ROOT}}assets/img/logo-hunter.webp" type="image/webp">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{a:meta.og_image_alt}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="max-image-preview:large">
+<link rel="icon" href="{{ROOT}}favicon.ico" sizes="48x48">
+<link rel="icon" href="{{ROOT}}assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="{{ROOT}}assets/img/apple-touch-icon.png">
+<link rel="manifest" href="{{ROOT}}site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
@@ -24,8 +33,8 @@
 <link rel="stylesheet" href="{{ROOT}}assets/css/products.css">
 <script type="application/ld+json">{{JSONLD}}</script>
 </head>
-<body class="no-js shop-page">
-<div class="cursor-light" aria-hidden="true"></div>
+<body class="no-js shop-page" data-page="shop">
+<div class="cursor-light" aria-hidden="true" data-persist></div>
 
 <header class="nav">
   <a class="brand" href="{{HOME}}"><img src="{{ROOT}}assets/img/logo-hunter.webp" alt="" width="38" height="38">GEMS HUNTER</a>
@@ -95,6 +104,6 @@
 {{FOOTER}}
 
 <script type="application/json" id="i18n">{{JS}}</script>
-<script src="{{ROOT}}assets/js/products.js" defer></script>
+<script type="module" src="{{ROOT}}assets/js/app.js"></script>
 </body>
 </html>

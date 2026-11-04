@@ -3,5 +3,6 @@ Allow: /
 Disallow: /scripts/
 Disallow: /data/
 Disallow: /i18n/
+Disallow: /*?feedback
 
 Sitemap: https://gems-hunter.github.io/sitemap.xml

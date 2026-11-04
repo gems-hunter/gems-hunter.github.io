@@ -11,6 +11,8 @@ def setUpModule():
     for lang in ("vi", "en"):
         build.build_home(lang)
         build.build_products(lang)
+    build.build_icons()
+    build.build_404()
     build.build_seo_files()
 
 
@@ -63,6 +65,32 @@ class SeoTest(unittest.TestCase):
         js = (ROOT / "assets/js/products.js").read_text(encoding="utf8")
         self.assertIn("data-lang-switch", js)
         self.assertIn("#sp-", js)
+
+
+    def test_social_and_icons(self):
+        for rel in PAGES.values():
+            h = page(rel)
+            for tag in ('og:image:width" content="1200"', 'og:image:height" content="630"', 'og:image:alt',
+                        'name="twitter:card" content="summary_large_image"', 'max-image-preview:large',
+                        'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest'):
+                self.assertIn(tag, h, (rel, tag))
+        for f in ("favicon.ico", "site.webmanifest", "assets/img/icon-192.png", "assets/img/icon-512.png",
+                  "assets/img/apple-touch-icon.png"):
+            self.assertTrue((ROOT / f).exists(), f)
+
+    def test_home_jsonld_graph(self):
+        import json
+        m = re.search(r'<script type="application/ld\+json">(.*?)</script>', page("index.html"), re.S)
+        types = {n["@type"] for n in json.loads(m.group(1))["@graph"]}
+        self.assertEqual(types, {"WebSite", "JewelryStore"})
+
+    def test_image_sitemap_404_robots(self):
+        x = (ROOT / "sitemap.xml").read_text(encoding="utf8")
+        self.assertIn("xmlns:image=", x)
+        self.assertGreater(x.count("<image:loc>"), 200)
+        self.assertNotIn("-480.webp", x)
+        self.assertIn('<meta name="robots" content="noindex">', page("404.html"))
+        self.assertIn("Disallow: /*?feedback", (ROOT / "robots.txt").read_text(encoding="utf8"))
 
 
 if __name__ == "__main__":

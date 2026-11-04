@@ -101,8 +101,11 @@ def build_home(lang):
         ti = "" if i == 0 else ' tabindex="-1"'
         tab_lines.append(f'    <button role="tab" aria-selected="{sel}"{ti} data-k="{i}">{e(p["tab"])}</button>')
     tabs = "\n".join(tab_lines)
-    ld = {"@context": "https://schema.org", "@type": "JewelryStore", "name": "Gems Hunter",
-          "url": f"{SITE_URL}{path}", "inLanguage": S["meta.lang"],
+    website = {"@type": "WebSite", "@id": f"{SITE_URL}/#website", "name": "Gems Hunter",
+               "alternateName": ["Gems Land", "Gemsland"], "url": f"{SITE_URL}/",
+               "inLanguage": list(LANGS), "publisher": {"@id": f"{SITE_URL}/#store"}}
+    ld = {"@type": "JewelryStore", "@id": f"{SITE_URL}/#store", "name": "Gems Hunter",
+          "url": f"{SITE_URL}{path}", "inLanguage": S["meta.lang"], "currenciesAccepted": "VND",
           "logo": f"{SITE_URL}/assets/img/logo-hunter.webp", "image": f"{SITE_URL}/assets/img/og.jpg",
           "description": S["meta.ld_description"], "areaServed": S["meta.ld_area"],
           "paymentAccepted": S["meta.ld_payment"],
@@ -114,7 +117,8 @@ def build_home(lang):
         "PK_RAW_ALT": e(picker[0]["raw_alt"]), "PK_MADE_ALT": e(picker[0]["made_alt"]),
         "PK_RAW_LABEL": e(picker[0]["raw_label"]), "PK_MADE_LABEL": e(picker[0]["made_label"]),
         "PK_SAY": e(picker[0]["say"]), "RAW_TYPE_Q": quote(raw_type),
-        "JSONLD": json.dumps(ld, ensure_ascii=False), "JS": i18n.js_payload(S),
+        "JSONLD": json.dumps({"@context": "https://schema.org", "@graph": [website, ld]}, ensure_ascii=False),
+        "JS": i18n.js_payload(S),
     })
     tpl = (TPL / "home.html").read_text(encoding="utf8")
     return write_page(path, i18n.render(tpl, S, root, extra))
@@ -310,24 +314,68 @@ def build_products(lang):
     return n
 
 
+def page_images(page):
+    """Anh trong trang (de dua vao image sitemap): duong dan tuyet doi, khong trung."""
+    h = page_file(LANGS["vi"][page]).read_text(encoding="utf8")
+    seen = []
+    for src in re.findall(r'<img [^>]*?src="([^"]+)"', h):
+        name = src.split("assets/img/", 1)[-1] if "assets/img/" in src else None
+        if not name or name.startswith("logo-"):
+            continue
+        if page == "products":
+            name = name.replace("-480.webp", "-960.webp")
+        url = f"{SITE_URL}/assets/img/{name}"
+        if url not in seen:
+            seen.append(url)
+    return seen
+
+
+def build_icons():
+    """favicon.ico, icon PNG, apple-touch-icon tu logo goc (cat phan bieu tuong cho co nho)."""
+    src = ROOT / "assets" / "img-src" / "logo-hunter.jpg"
+    if not src.exists():
+        print("  ! thieu", src); return
+    logo = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
+    w, h = logo.size
+    emblem = logo.crop((round(w * .185), round(h * .075), round(w * .815), round(h * .705)))  # bo chu, giu bieu tuong
+    emblem.resize((48, 48), Image.LANCZOS).save(ROOT / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+    png = lambda im, size, name: im.resize((size, size), Image.LANCZOS).quantize(128).save(IMG / name, optimize=True)
+    png(emblem, 192, "icon-192.png"); png(emblem, 180, "apple-touch-icon.png"); png(logo, 512, "icon-512.png")
+    manifest = {"name": "Gems Hunter", "short_name": "Gems Hunter", "start_url": "/", "display": "browser",
+                "background_color": "#060A20", "theme_color": "#060A20",
+                "icons": [{"src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"},
+                          {"src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}]}
+    (ROOT / "site.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=1) + "\n", encoding="utf8")
+
+
+def build_404():
+    """GitHub Pages tu dung /404.html cho moi duong dan khong ton tai."""
+    tpl = (TPL / "404.html").read_text(encoding="utf8")
+    (ROOT / "404.html").write_text(tpl.replace("{{SITE_URL}}", SITE_URL), encoding="utf8")
+
+
 def build_seo_files():
     today = date.today().isoformat()
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
-           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"'
+           ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">']
     for page in ("home", "products"):
+        imgs = page_images(page)
         for lang in LANGS:
             xml.append(f"  <url><loc>{SITE_URL}{LANGS[lang][page]}</loc><lastmod>{today}</lastmod>")
             for l in LANGS:
                 xml.append(f'    <xhtml:link rel="alternate" hreflang="{l}" href="{SITE_URL}{LANGS[l][page]}"/>')
+            xml.extend(f"    <image:image><image:loc>{u}</image:loc></image:image>" for u in imgs)
             xml.append("  </url>")
     xml.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(xml) + "\n", encoding="utf8")
-    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\nDisallow: /i18n/\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf8")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\nDisallow: /i18n/\nDisallow: /*?feedback\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf8")
 
 
 if __name__ == "__main__":
     print("Anh trang chu..."); build_home_images()
     print("Trang chu VI/EN..."); [build_home(l) for l in LANGS]
     print("Trang san pham VI/EN..."); [build_products(l) for l in LANGS]
+    print("Icon, 404..."); build_icons(); build_404()
     print("Sitemap/robots..."); build_seo_files()
     print("Xong.")
