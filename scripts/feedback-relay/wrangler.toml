@@ -1,0 +1,7 @@
+name = "gems-feedback-relay"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+[vars]
+# Origin duoc phep gui gop y (cach nhau bang dau phay)
+ALLOWED_ORIGINS = "https://gems-hunter.github.io,http://localhost:8000"

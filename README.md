@@ -47,6 +47,15 @@ Nếu hai file lệch key, build sẽ báo lỗi.
 - `sitemap.xml` liệt kê 4 URL, có `xhtml:link` chéo giữa hai ngôn ngữ. `robots.txt` chặn `/scripts/`, `/data/`, `/i18n/`.
 - Tên miền `https://gems-hunter.github.io`, đặt ở `SITE_URL` trong `scripts/build.py`.
 
+## Chế độ góp ý (`?feedback`)
+Mở `https://gems-hunter.github.io/?feedback` trên **máy tính** để bật [Agentation](https://agentation.com): bấm biểu tượng ở góc phải dưới, chọn phần tử (hoặc bôi chữ, kéo vùng), ghi chú, rồi bấm *Send Annotations*. Chế độ được nhớ trong tab nên chuyển trang vẫn còn; tắt bằng `?feedback=off`. Khách bình thường không tải gì thêm.
+
+Nội dung gửi gồm ghi chú, selector của phần tử, trang, kích thước màn hình. Nơi nhận cấu hình trong `CONFIG` ở `assets/js/feedback.js`:
+- **Email**: lấy access key ở https://web3forms.com rồi điền `web3formsKey`.
+- **Telegram**: deploy Cloudflare Worker trong `scripts/feedback-relay/` (hướng dẫn ở đầu `worker.js`), điền URL worker vào `telegramRelay`. Bot token chỉ nằm trong secret của worker.
+
+`assets/js/vendor/agentation.mjs` là bản đóng gói sẵn Agentation + React. Cập nhật: `cd scripts/feedback && npm install && npm run build`.
+
 ## Deploy GitHub Pages
 - Repo phải tên đúng `gems-hunter.github.io` (thuộc org `gems-hunter`).
 - Settings → Pages → Source: *Deploy from a branch* → `main` / `/ (root)`.

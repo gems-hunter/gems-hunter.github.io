@@ -44,7 +44,9 @@ em{font-style:italic;color:var(--aqua)}
 
 /* nav */
 .nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:20px var(--m);transition:background-color .4s, padding .4s}
-.nav.scrolled{background:rgba(6,10,32,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding-top:14px;padding-bottom:14px}
+.nav::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(6,10,32,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .4s}
+.nav.scrolled{padding-top:14px;padding-bottom:14px}
+.nav.scrolled::before{opacity:1}
 .nav .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font:300 15px/1 var(--serif);letter-spacing:.32em}
 .nav .brand img{width:38px;height:38px;border-radius:50%;object-fit:cover}
 .nav ul{display:flex;gap:32px;list-style:none;font-size:14px}
@@ -52,6 +54,7 @@ em{font-style:italic;color:var(--aqua)}
 .nav ul a:hover{opacity:1;color:var(--aqua)}
 .nav .btn{min-height:42px;padding:0 20px;font-size:14px}
 .nav-end{display:flex;align-items:center;gap:18px}
+.menu-btn{display:none}
 .lang{display:flex;gap:2px;font:400 12px/1 var(--sans);letter-spacing:.12em}
 .lang a{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;border-radius:999px;text-decoration:none;opacity:.6;transition:opacity .2s,color .2s}
 .lang a:hover{opacity:1;color:var(--aqua)}
@@ -240,7 +243,35 @@ em{font-style:italic;color:var(--aqua)}
 
 /* ---------- phone / tablet ---------- */
 @media (max-width:900px){
-  .nav ul{display:none}
+  /* drawer */
+  .nav::after{content:"";position:fixed;inset:0;z-index:-1;background:rgba(2,4,14,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    opacity:0;visibility:hidden;transition:opacity .4s, visibility 0s .4s}
+  .nav.open::after{opacity:1;visibility:visible;transition:opacity .4s}
+  .nav ul{position:fixed;top:0;right:0;bottom:0;z-index:1;width:min(82vw,340px);flex-direction:column;gap:0;padding:104px 28px 40px;overflow-y:auto;
+    background:radial-gradient(120% 60% at 100% 0%, rgba(127,214,226,.10), transparent 60%), #070B22;
+    border-left:1px solid rgba(127,214,226,.16);box-shadow:-40px 0 90px -20px rgba(0,0,0,.75);
+    transform:translateX(100%);visibility:hidden;transition:transform .5s cubic-bezier(.22,.8,.2,1), visibility 0s .5s}
+  .nav.open ul{transform:none;visibility:visible;transition:transform .5s cubic-bezier(.22,.8,.2,1)}
+  .nav ul li{opacity:0;transform:translateX(18px);transition:opacity .3s, transform .3s}
+  .nav.open ul li{opacity:1;transform:none;transition:opacity .5s, transform .5s}
+  .nav.open ul li:nth-child(1){transition-delay:.12s} .nav.open ul li:nth-child(2){transition-delay:.17s} .nav.open ul li:nth-child(3){transition-delay:.22s}
+  .nav.open ul li:nth-child(4){transition-delay:.27s} .nav.open ul li:nth-child(5){transition-delay:.32s}
+  .nav ul a{display:flex;align-items:center;min-height:64px;border-bottom:1px solid rgba(238,241,248,.08);font:300 24px/1.2 var(--serif);letter-spacing:.01em;opacity:.92}
+  .nav ul a:hover,.nav ul a:focus-visible{color:var(--aqua);opacity:1}
+  .nav-end{position:relative;z-index:2}
+  html.menu-open{overflow:hidden}
+  .nav .brand{transition:color .3s}
+  .nav.open .brand{color:transparent}
+  .menu-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;margin-left:4px;padding:0;border:0;border-radius:50%;cursor:pointer;color:var(--ink);
+    background:rgba(238,241,248,.07);box-shadow:inset 0 0 0 1px rgba(238,241,248,.18)}
+  .menu-btn i,.menu-btn i::before,.menu-btn i::after{display:block;width:16px;height:1.5px;border-radius:2px;background:currentColor}
+  .menu-btn i{position:relative;transition:background-color .2s}
+  .menu-btn i::before,.menu-btn i::after{content:"";position:absolute;left:0;transition:transform .3s}
+  .menu-btn i::before{transform:translateY(-5px)}
+  .menu-btn i::after{transform:translateY(5px)}
+  .nav.open .menu-btn i{background:transparent}
+  .nav.open .menu-btn i::before{transform:rotate(45deg)}
+  .nav.open .menu-btn i::after{transform:rotate(-45deg)}
   .nav .brand{font-size:13px;letter-spacing:.2em;gap:10px;white-space:nowrap}
   .nav .brand img{width:32px;height:32px}
   .nav-end{gap:6px}
@@ -287,6 +318,7 @@ em{font-style:italic;color:var(--aqua)}
   .foot .brand-col{grid-column:1/-1}
 }
 @media (max-width:400px){ .nav{gap:10px} .nav .brand{font-size:12px;letter-spacing:.14em;gap:8px} .nav .brand img{width:28px;height:28px} .nav .btn{padding:0 12px;font-size:13px} }
+@media (max-width:380px){ .nav .brand{font-size:0;gap:0} }
 @media (min-width:901px){ .hunter .grid{display:contents} }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}

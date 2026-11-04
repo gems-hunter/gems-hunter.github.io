@@ -7,6 +7,22 @@
   // nav + reveal + cursor light (giong trang chu)
   var nav=$('.nav'); function navState(){ nav.classList.toggle('scrolled', scrollY>40) }
   addEventListener('scroll',navState,{passive:true}); navState();
+
+  // menu mobile (hamburger)
+  var mb=$('.menu-btn');
+  function setMenu(o){ nav.classList.toggle('open',o); document.documentElement.classList.toggle('menu-open',o); mb.setAttribute('aria-expanded',o) }
+  mb.addEventListener('click',function(e){ e.stopPropagation(); setMenu(!nav.classList.contains('open')) });
+  $$('#nav-menu a').forEach(function(a){ a.addEventListener('click',function(){ setMenu(false) }) });
+  document.addEventListener('click',function(e){ if(nav.classList.contains('open') && (e.target===nav || !nav.contains(e.target))) setMenu(false) });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && nav.classList.contains('open')){ setMenu(false); mb.focus() } });
+  matchMedia('(min-width:901px)').addEventListener('change',function(m){ if(m.matches) setMenu(false) });
+
+  // che do gop y: ?feedback bat (nho trong tab), ?feedback=off tat. Xem assets/js/feedback.js
+  (function(){ var q=new URLSearchParams(location.search), on=false;
+    try{ if(q.has('feedback')) sessionStorage.setItem('gh-feedback', q.get('feedback')==='off'?'0':'1'); on=sessionStorage.getItem('gh-feedback')==='1' }
+    catch(e){ on=q.has('feedback') && q.get('feedback')!=='off' }
+    if(on) import('./feedback.js').catch(function(e){ console.error('[feedback]', e) });
+  })();
   var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} })},{threshold:.12});
   $$('.rv').forEach(function(el){ io.observe(el) });
   var cl=$('.cursor-light');

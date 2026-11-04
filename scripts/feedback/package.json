@@ -1,0 +1,16 @@
+{
+  "name": "gems-feedback-bundle",
+  "private": true,
+  "description": "Builds assets/js/vendor/agentation.mjs (Agentation + React) for the ?feedback mode",
+  "scripts": {
+    "build": "esbuild entry.js --bundle --format=esm --minify --target=es2019 --legal-comments=eof --define:process.env.NODE_ENV=\\\"production\\\" --outfile=../../assets/js/vendor/agentation.mjs"
+  },
+  "dependencies": {
+    "agentation": "3.1.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2"
+  }
+}
