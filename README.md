@@ -1,6 +1,6 @@
-# Gems Hunter — website tĩnh song ngữ VI / EN (HTML / CSS / JS thuần)
+# Gemsland — website tĩnh song ngữ VI / EN (HTML / CSS / JS thuần)
 
-Một thương hiệu duy nhất là **Gems Hunter**. Hai tài khoản Instagram `_gems.hunter_` và `_gemsland_` chỉ xuất hiện ở footer. Mọi nút nhắn tin đều mở `ig.me/m/_gems.hunter_`.
+Một thương hiệu duy nhất là **Gemsland**. Tên cũ Gems Hunter (và tài khoản `_gems.hunter_`) chỉ còn ở footer và JSON-LD. Mọi nút nhắn tin đều mở `ig.me/m/_gemsland_`.
 
 | Trang | Tiếng Việt | English |
 |---|---|---|
@@ -49,10 +49,10 @@ Nếu hai file lệch key, build sẽ báo lỗi.
 - `<html lang>`, `<title>`, meta description, canonical, Open Graph (`og:locale` và `og:locale:alternate`), `hreflang` vi/en/x-default.
 - JSON-LD: JewelryStore ở trang chủ; CollectionPage + ItemList + Breadcrumb ở trang sản phẩm, có `inLanguage`.
 - `sitemap.xml` liệt kê 4 URL, có `xhtml:link` chéo giữa hai ngôn ngữ. `robots.txt` chặn `/scripts/`, `/data/`, `/i18n/`.
-- Tên miền `https://gems-hunter.github.io`, đặt ở `SITE_URL` trong `scripts/build.py`.
+- Tên miền `https://gemsland.github.io`, đặt ở `SITE_URL` trong `scripts/build.py`.
 
 ## Chế độ góp ý (`?feedback`)
-Mở `https://gems-hunter.github.io/?feedback` trên **máy tính** để bật [Agentation](https://agentation.com): bấm biểu tượng ở góc phải dưới, chọn phần tử (hoặc bôi chữ, kéo vùng), ghi chú, rồi bấm *Send Annotations*. Chế độ được nhớ trong tab nên chuyển trang vẫn còn; tắt bằng `?feedback=off`. Khách bình thường không tải gì thêm.
+Mở `https://gemsland.github.io/?feedback` trên **máy tính** để bật [Agentation](https://agentation.com): bấm biểu tượng ở góc phải dưới, chọn phần tử (hoặc bôi chữ, kéo vùng) rồi ghi chú. Muốn sang trang khác thì đóng thanh công cụ (✕), bấm link như bình thường (URL vẫn giữ `?feedback`), rồi mở lại; mỗi trang giữ ghi chú riêng. Bấm *Send Annotations* một lần là gửi **ghi chú của tất cả các trang**, gửi xong tự xoá. Chế độ chỉ bật khi URL có `?feedback`; bỏ nó khỏi URL rồi tải lại là tắt. Khách bình thường không tải gì thêm.
 
 Nội dung gửi gồm ghi chú, selector của phần tử, trang, kích thước màn hình. Nơi nhận cấu hình trong `CONFIG` ở `assets/js/feedback.js`:
 - **Email**: lấy access key ở https://web3forms.com rồi điền `web3formsKey`.
@@ -61,13 +61,13 @@ Nội dung gửi gồm ghi chú, selector của phần tử, trang, kích thư�
 `assets/js/vendor/agentation.mjs` là bản đóng gói sẵn Agentation + React. Cập nhật: `cd scripts/feedback && npm install && npm run build`.
 
 ## Deploy GitHub Pages
-- Repo phải tên đúng `gems-hunter.github.io` (thuộc org `gems-hunter`).
+- Repo phải tên đúng `gemsland.github.io` (thuộc org `gemsland`).
 - Settings → Pages → Source: *Deploy from a branch* → `main` / `/ (root)`.
 - Mỗi lần `git push` lên `main`, trang tự cập nhật sau 1–2 phút.
 - Story nổi bật (`assets/instagram/*/stories/`) không được đưa lên git vì có ảnh chat của khách.
 
 ## Lưu ý
 - Tên, loại đá, loại món được tách tự động từ caption nên vẫn có thể sai: nên đọc lại `data/products.json`.
-- Caption cũ gọi tiệm là "Gemsland". Khi build, chữ này được đổi thành "Gems Hunter" trong tên và mô tả.
+- Caption cũ gọi tiệm là "Gems Hunter" / "Gems Land". Khi build, các chữ này được đổi thành "Gemsland" trong tên và mô tả.
 - Bản dịch tiếng Anh trong `data/products.en.json` là dịch máy và cần người trong tiệm đọc lại.
 - Ảnh gốc từ Instagram còn watermark `@gemsland`: nên thay bằng ảnh gốc của tiệm khi có.

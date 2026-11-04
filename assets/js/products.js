@@ -1,5 +1,5 @@
 // Trang san pham: loc, tim kiem, lightbox. init(signal) tra ve ham don dep (router goi khi roi trang).
-import { $, $$, i18n } from './common.js';
+import { $, $$, i18n, withFeedback } from './common.js';
 
 export default function initShop(signal) {
   const I18N = i18n();
@@ -39,7 +39,7 @@ export default function initShop(signal) {
     more.hidden = n <= shown; empty.hidden = n > 0;
     const p = new URLSearchParams();
     if (state.type) p.set('loai', state.type); if (state.stone) p.set('da', state.stone); if (state.q) p.set('q', state.q);
-    setURL(location.pathname + (p.toString() ? '?' + p : '') + location.hash);
+    setURL(location.pathname + withFeedback(p.toString() ? '?' + p : '') + location.hash);
   };
   $$('[data-f-stone]').forEach((b) => b.addEventListener('click', () => { state.stone = b.dataset.fStone; sync(); apply(true); }));
   $('#type').addEventListener('change', (e) => { state.type = e.target.value; apply(true); });

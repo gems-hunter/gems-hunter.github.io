@@ -42,9 +42,9 @@ def check():
                 target = target / "index.html"
             if not target.exists():
                 errors.append(f"{rel}: link hong {ref}")
-        if re.search(r"gems ?land", brand_zone_free(h), re.I):
-            errors.append(f"{rel}: 'Gems Land' xuat hien ngoai footer")
-        bad_ig = set(re.findall(r"ig\.me/m/([\w.]+)", h)) - {"_gems.hunter_"}
+        if re.search(r"gems ?hunter", brand_zone_free(h), re.I):
+            errors.append(f"{rel}: ten cu 'Gems Hunter' xuat hien ngoai footer")
+        bad_ig = set(re.findall(r"ig\.me/m/([\w.]+)", h)) - {"_gemsland_"}
         if bad_ig:
             errors.append(f"{rel}: ig.me tro toi {bad_ig}")
     if len(html) == 4:

@@ -1,4 +1,4 @@
-"""Build tinh cho website Gems Land (thuan HTML/CSS/JS).
+"""Build tinh cho website Gemsland (thuan HTML/CSS/JS).
 
 Chay:  python scripts/build.py
 - Tao anh webp cho trang chu (assets/img/*.webp) tu anh goc Instagram
@@ -13,7 +13,7 @@ from datetime import date
 from urllib.parse import quote
 from PIL import Image, ImageOps
 
-SITE_URL = "https://gems-hunter.github.io"
+SITE_URL = "https://gemsland.github.io"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from scripts import i18n  # noqa: E402
@@ -101,16 +101,16 @@ def build_home(lang):
         ti = "" if i == 0 else ' tabindex="-1"'
         tab_lines.append(f'    <button role="tab" aria-selected="{sel}"{ti} data-k="{i}">{e(p["tab"])}</button>')
     tabs = "\n".join(tab_lines)
-    website = {"@type": "WebSite", "@id": f"{SITE_URL}/#website", "name": "Gems Hunter",
-               "alternateName": ["Gems Land", "Gemsland"], "url": f"{SITE_URL}/",
+    website = {"@type": "WebSite", "@id": f"{SITE_URL}/#website", "name": "Gemsland",
+               "alternateName": ["Gems Land", "Gems Hunter"], "url": f"{SITE_URL}/",
                "inLanguage": list(LANGS), "publisher": {"@id": f"{SITE_URL}/#store"}}
-    ld = {"@type": "JewelryStore", "@id": f"{SITE_URL}/#store", "name": "Gems Hunter",
+    ld = {"@type": "JewelryStore", "@id": f"{SITE_URL}/#store", "name": "Gemsland",
           "url": f"{SITE_URL}{path}", "inLanguage": S["meta.lang"], "currenciesAccepted": "VND",
-          "logo": f"{SITE_URL}/assets/img/logo-hunter.webp", "image": f"{SITE_URL}/assets/img/og.jpg",
+          "logo": f"{SITE_URL}/assets/img/logo-gemsland.webp", "image": f"{SITE_URL}/assets/img/og.jpg",
           "description": S["meta.ld_description"], "areaServed": S["meta.ld_area"],
           "paymentAccepted": S["meta.ld_payment"],
-          "sameAs": ["https://www.instagram.com/_gems.hunter_/", "https://www.instagram.com/_gemsland_/",
-                     "https://www.threads.net/@_gemsland_"]}
+          "sameAs": ["https://www.instagram.com/_gemsland_/", "https://www.threads.net/@_gemsland_",
+                     "https://www.instagram.com/_gems.hunter_/"]}
     raw_type = S["types.da-tho"] if "types.da-tho" in S else ("Đá thô" if lang == "vi" else "Raw stone")
     extra.update({
         "HERO_NAME": e(hero[0][0]), "HERO_DESC": e(hero[0][1]), "PICKER_TABS": tabs,
@@ -197,12 +197,12 @@ def load_en():
     return json.loads(f.read_text(encoding="utf8")) if f.exists() else {}
 
 
-BRAND_RX = re.compile(r"gems ?land|gemshunter", re.I)
+BRAND_RX = re.compile(r"(?<![@_\w.])gems ?(?:hunter|land)(?![_\w])", re.I)  # khong dung vao handle @_gemsland_
 
 
 def one_brand(text):
-    """Caption cu goi tiem la Gemsland; website chi dung mot ten Gems Hunter."""
-    return BRAND_RX.sub("Gems Hunter", text or "")
+    """Caption goi tiem la Gems Hunter / Gems Land; website chi dung mot ten Gemsland."""
+    return BRAND_RX.sub("Gemsland", text or "")
 
 
 def localize(p, lang, en_data, S):
@@ -229,7 +229,7 @@ def card(p, i, lang, S, root):
     pid = e(p["id"])
     t, st = p["type_label"], p["stone_label"]
     shown_stone = st if p["has_stone"] else ""
-    alt = e(f'{p["name"]} — {t.lower()}{" " + shown_stone if shown_stone else ""} | Gems Hunter')
+    alt = e(f'{p["name"]} — {t.lower()}{" " + shown_stone if shown_stone else ""} | Gemsland')
     search = e(search_text(p["name"], p["vi_name"], shown_stone, p["vi_stone"], t, p["vi_type"], p.get("desc", "")[:120]))
     sold = p["status"] == "sold"
     badges = f'<span class="chip">{e(shown_stone)}</span>' if shown_stone else ""
@@ -250,7 +250,7 @@ def card(p, i, lang, S, root):
       <h3>{e(p["name"])}</h3>
       {desc}
       <div class="acts">
-        <a class="btn sm" href="https://ig.me/m/_gems.hunter_" rel="nofollow">{e(ask)}</a>
+        <a class="btn sm" href="https://ig.me/m/_gemsland_" rel="nofollow">{e(ask)}</a>
         <a class="ig" href="{e(p["permalink"])}" rel="nofollow noopener" target="_blank" aria-label="{e(S['shop.ig_post'])}">Instagram ↗</a>
       </div>
     </div>
@@ -332,16 +332,16 @@ def page_images(page):
 
 def build_icons():
     """favicon.ico, icon PNG, apple-touch-icon tu logo goc (cat phan bieu tuong cho co nho)."""
-    src = ROOT / "assets" / "img-src" / "logo-hunter.jpg"
+    src = ROOT / "assets" / "img-src" / "logo-gemsland.jpg"
     if not src.exists():
         print("  ! thieu", src); return
     logo = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
     w, h = logo.size
-    emblem = logo.crop((round(w * .185), round(h * .075), round(w * .815), round(h * .705)))  # bo chu, giu bieu tuong
+    emblem = logo.crop((round(w * .285), round(h * .175), round(w * .71), round(h * .60)))  # bo chu, giu bieu tuong
     emblem.resize((48, 48), Image.LANCZOS).save(ROOT / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
     png = lambda im, size, name: im.resize((size, size), Image.LANCZOS).quantize(128).save(IMG / name, optimize=True)
     png(emblem, 192, "icon-192.png"); png(emblem, 180, "apple-touch-icon.png"); png(logo, 512, "icon-512.png")
-    manifest = {"name": "Gems Hunter", "short_name": "Gems Hunter", "start_url": "/", "display": "browser",
+    manifest = {"name": "Gemsland", "short_name": "Gemsland", "start_url": "/", "display": "browser",
                 "background_color": "#060A20", "theme_color": "#060A20",
                 "icons": [{"src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"},
                           {"src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}]}

@@ -46,12 +46,12 @@ class ProductsPageTest(unittest.TestCase):
 
     def test_order_buttons(self):
         for rel in (VI, EN):
-            self.assertEqual(igme_targets(page(rel)), {"_gems.hunter_"}, rel)
+            self.assertEqual(igme_targets(page(rel)), {"_gemsland_"}, rel)
 
     def test_brand_only_in_footer(self):
         for rel in (VI, EN):
             body = re.sub(r'href="https://www\.instagram\.com/p/[^"]+"', "", strip_allowed_brand_zones(page(rel)))
-            self.assertEqual(re.findall(r".{20}gems ?land.{20}", body, re.I)[:3], [], rel)
+            self.assertEqual(re.findall(r".{20}gems ?hunter.{20}", body, re.I)[:3], [], rel)
 
     def test_count_label_in_js(self):
         self.assertIn('"count": "{n} pieces"', page(EN))

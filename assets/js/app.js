@@ -1,5 +1,5 @@
 // Diem vao duy nhat cho moi trang (type="module").
-import { initPage, initOnce, feedbackOn } from './common.js';
+import { initPage, initOnce } from './common.js';
 import initHome from './main.js';
 import initShop from './products.js';
 import { startRouter } from './router.js';
@@ -22,5 +22,4 @@ function teardown() {
 
 initOnce();
 boot();
-// Che do gop y (Agentation) can tai trang that de ghi chu gan dung URL, nen tat router khi dang gop y
-if (!feedbackOn()) startRouter({ initialHTML, teardown, boot });
+startRouter({ initialHTML, teardown, boot });

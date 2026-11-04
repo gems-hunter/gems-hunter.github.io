@@ -7,6 +7,11 @@ export const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const i18n = () => JSON.parse($('#i18n').textContent);
 export const root = () => document.documentElement.dataset.root || '';
 
+// Dang o che do gop y (?feedback tren URL) thi giu ?feedback khi doi URL / chuyen trang
+const HAS_FB = /[?&]feedback(?:[=&]|$)/;
+export const withFeedback = (search) =>
+  !HAS_FB.test(location.search) || HAS_FB.test(search) ? search : (search ? search + '&feedback' : '?feedback');
+
 export function initPage(signal) {
   document.body.classList.remove('no-js');
 
@@ -42,15 +47,11 @@ export function initPage(signal) {
   return () => { io.disconnect(); setMenu(false); };
 }
 
-// che do gop y: ?feedback bat (nho trong tab), ?feedback=off tat. Xem assets/js/feedback.js
+// che do gop y: chi bat khi URL co ?feedback (router tu giu ?feedback khi chuyen trang trong site).
+// ?feedback=off hoac bo ?feedback khoi URL roi tai lai la tat.
 export function feedbackOn() {
   const q = new URLSearchParams(location.search);
-  try {
-    if (q.has('feedback')) sessionStorage.setItem('gh-feedback', q.get('feedback') === 'off' ? '0' : '1');
-    return sessionStorage.getItem('gh-feedback') === '1';
-  } catch (e) {
-    return q.has('feedback') && q.get('feedback') !== 'off';
-  }
+  return q.has('feedback') && q.get('feedback') !== 'off';
 }
 
 export function initOnce() {

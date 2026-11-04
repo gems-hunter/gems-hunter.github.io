@@ -14,7 +14,7 @@ const TG_LIMIT = 4000; // Telegram gioi han 4096 ky tu / tin nhan
 
 export default {
   async fetch(req, env) {
-    const allowed = (env.ALLOWED_ORIGINS || "https://gems-hunter.github.io").split(",").map((s) => s.trim());
+    const allowed = (env.ALLOWED_ORIGINS || "https://gemsland.github.io").split(",").map((s) => s.trim());
     const origin = req.headers.get("Origin") || "";
     const cors = {
       "Access-Control-Allow-Origin": allowed.includes(origin) ? origin : allowed[0],

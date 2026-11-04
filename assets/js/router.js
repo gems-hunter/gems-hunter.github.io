@@ -2,14 +2,18 @@
 // khoi tao lai JS cua trang. Trang da tai duoc giu trong bo nho nen quay lai/sang lai la tuc thi,
 // va vi tri cuon cua tung muc lich su duoc nho lai.
 // Neu co gi bat thuong (loi mang, trinh duyet cu...) thi de trinh duyet tai trang binh thuong.
-import { $$, reduce } from './common.js';
+import { $$, reduce, withFeedback } from './common.js';
 
 const ROUTE = /^\/(?:en\/(?:products\/)?|san-pham\/)?$/; // /, /en/, /san-pham/, /en/products/
-const PERSIST = '[data-persist], #agentation-root';
-const keepHead = (el) => el.matches('meta[charset], meta[name=viewport], link[rel=stylesheet], link[rel=preconnect], link[href*="fonts.googleapis"]');
+const PERSIST = '[data-persist], #agentation-root, [data-agentation-portal]';
+const keepHead = (el) => el.matches('meta[charset], meta[name=viewport], link[rel=stylesheet], link[rel=preconnect], link[href*="fonts.googleapis"], style, [data-persist]');
+// URL tuyet doi cua stylesheet, ghi lai luc tai: sau pushState, link.href tuong doi bi tinh lai theo URL moi
+const abs = (l) => l.dataset.abs || (l.dataset.abs = l.href);
 
 export function startRouter({ initialHTML, teardown, boot }) {
   if (!window.DOMParser || !history.pushState) return;
+  // doi href stylesheet sang URL tuyet doi ngay tu dau (cung URL nen trinh duyet khong tai lai)
+  document.querySelectorAll('link[rel=stylesheet]').forEach((l) => l.setAttribute('href', abs(l)));
   history.scrollRestoration = 'manual';
 
   const pages = new Map(); // pathname -> Promise<html>
@@ -70,9 +74,9 @@ export function startRouter({ initialHTML, teardown, boot }) {
 
   const loadStyles = (doc, u) => Promise.all([...doc.querySelectorAll('link[rel=stylesheet]')].map((l) => {
     const href = new URL(l.getAttribute('href'), u).href;
-    if ([...document.querySelectorAll('link[rel=stylesheet]')].some((x) => x.href === href)) return null;
+    if ([...document.querySelectorAll('link[rel=stylesheet]')].some((x) => abs(x) === href)) return null;
     return new Promise((res) => {
-      const n = document.createElement('link'); n.rel = 'stylesheet'; n.href = href;
+      const n = document.createElement('link'); n.rel = 'stylesheet'; n.href = href; n.dataset.abs = href;
       n.onload = n.onerror = res; document.head.appendChild(n);
     });
   }));
@@ -95,7 +99,7 @@ export function startRouter({ initialHTML, teardown, boot }) {
       b.appendChild(document.importNode(el, true));
     });
     [...document.querySelectorAll('link[rel=stylesheet]')].forEach((l) => {
-      if (!l.href.includes('fonts.googleapis') && !want.has(l.href)) l.remove();
+      if (!abs(l).includes('fonts.googleapis') && !want.has(abs(l))) l.remove();
     });
     current = location.pathname;
     boot();
@@ -120,9 +124,11 @@ export function startRouter({ initialHTML, teardown, boot }) {
     if (my !== seq) return;
     if (push) {
       pos.set(keyOf(), scrollY);
+      u.search = withFeedback(u.search); // giu ?feedback khi dang gop y
       history.pushState({ k: newKey() }, '', u.href);
     }
-    const run = () => { swap(doc, u); scrollAfter(u, push); };
+    // gh:navigate: bao cho phan khac (vd. che do gop y) biet da doi trang
+    const run = () => { swap(doc, u); scrollAfter(u, push); document.dispatchEvent(new CustomEvent('gh:navigate')); };
     if (document.startViewTransition && !reduce) document.startViewTransition(run);
     else run();
   }

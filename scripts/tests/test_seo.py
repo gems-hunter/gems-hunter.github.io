@@ -4,7 +4,7 @@ from scripts.tests.helpers import page, ROOT
 
 PAGES = {("vi", "home"): "index.html", ("en", "home"): "en/index.html",
          ("vi", "products"): "san-pham/index.html", ("en", "products"): "en/products/index.html"}
-SITE = "https://gems-hunter.github.io"
+SITE = "https://gemsland.github.io"
 
 
 def setUpModule():

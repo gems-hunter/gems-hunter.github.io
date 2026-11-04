@@ -8,7 +8,7 @@ def page(rel):
 
 
 def strip_allowed_brand_zones(h):
-    """Bo footer va JSON-LD: hai vung duoc phep nhac Gems Land."""
+    """Bo footer va JSON-LD: hai vung duoc phep nhac ten cu Gems Hunter."""
     h = re.sub(r"<footer.*?</footer>", "", h, flags=re.S)
     return re.sub(r'<script type="application/ld\+json">.*?</script>', "", h, flags=re.S)
 

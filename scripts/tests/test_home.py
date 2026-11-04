@@ -25,11 +25,11 @@ class HomeTest(unittest.TestCase):
     def test_brand_only_in_footer(self):
         for rel in ("index.html", "en/index.html"):
             body = strip_allowed_brand_zones(page(rel))
-            self.assertIsNone(re.search(r"gems ?land", body, re.I), rel)
+            self.assertIsNone(re.search(r"gems ?hunter", body, re.I), rel)
 
-    def test_all_igme_to_gems_hunter(self):
+    def test_all_igme_to_gemsland(self):
         for rel in ("index.html", "en/index.html"):
-            self.assertEqual(igme_targets(page(rel)), {"_gems.hunter_"}, rel)
+            self.assertEqual(igme_targets(page(rel)), {"_gemsland_"}, rel)
 
     def test_assets_prefixed(self):
         h = page("en/index.html")

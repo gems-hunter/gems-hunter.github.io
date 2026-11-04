@@ -5,4 +5,4 @@ Disallow: /data/
 Disallow: /i18n/
 Disallow: /*?feedback
 
-Sitemap: https://gems-hunter.github.io/sitemap.xml
+Sitemap: https://gemsland.github.io/sitemap.xml
