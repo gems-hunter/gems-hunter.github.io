@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /scripts/
+Disallow: /data/
+
+Sitemap: https://gems-hunter.github.io/sitemap.xml
