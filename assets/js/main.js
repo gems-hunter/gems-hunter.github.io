@@ -80,7 +80,7 @@
     setTimeout(function(){
       $('#d-raw').src=d.raw[0]; $('#d-raw').alt=d.raw[1]; $('#l-raw').textContent=d.raw[2];
       $('#d-made').src=d.made[0]; $('#d-made').alt=d.made[1]; $('#l-made').textContent=d.made[2];
-      $('#say').textContent=d.say; duo.classList.remove('swap');
+      duo.classList.remove('swap');
     }, reduce?0:420);
   }
   tabs.forEach(function(t,i){

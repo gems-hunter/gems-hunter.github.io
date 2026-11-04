@@ -12,14 +12,14 @@ class HomeTest(unittest.TestCase):
     def test_vi_lang_and_slogan(self):
         h = page("index.html")
         self.assertIn('<html lang="vi"', h)
-        self.assertIn("Ngày xửa ngày xưa, có viên đá đang tìm bạn.", h)
-        self.assertIn("Mỗi viên đá là một câu chuyện.", h)
+        self.assertIn("Có những viên đá chỉ xuất hiện một lần và chờ đúng một người.", h)
+        self.assertIn("Mỗi viên đá là một câu chuyện chưa có hồi kết…", h)
 
     def test_en_lang_and_slogan(self):
         h = page("en/index.html")
         self.assertIn('<html lang="en"', h)
-        self.assertIn("Find the stone that finds you.", h)
-        self.assertIn("Every stone is a story.", h)
+        self.assertIn("Some stones appear only once and wait for just one person.", h)
+        self.assertIn("Every stone is a story with no ending yet…", h)
         self.assertNotIn("Open your mind", h)
 
     def test_brand_only_in_footer(self):
