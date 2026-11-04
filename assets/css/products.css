@@ -112,3 +112,6 @@
   .fchips::-webkit-scrollbar{display:none}
   .fchip{flex:none}
 }
+
+.lb-lang{display:inline-block;margin-top:18px;font-size:13px;letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s}
+.lb-lang:hover{color:var(--aqua)}

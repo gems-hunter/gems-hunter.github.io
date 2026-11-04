@@ -199,7 +199,8 @@
   "ask_available": "Ask if available",
   "ask_similar": "Ask for a similar piece",
   "sold": "Sold",
-  "crumb_home": "Home"
+  "crumb_home": "Home",
+  "lb_lang": "Xem bằng tiếng Việt"
  },
  "types": {
   "vong-co": "Necklace",

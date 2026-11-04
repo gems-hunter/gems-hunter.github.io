@@ -75,6 +75,8 @@ def common_extra(lang, page, root):
     extra = {"SITE_URL": SITE_URL, "CANONICAL": SITE_URL + L[page],
              "HOME": link(root, L["home"]), "PRODUCTS": link(root, L["products"]),
              "ALTERNATES": alternates(page), "LANG_SWITCH": lang_switch(page, lang, root)}
+    other = next(l for l in LANGS if l != lang)
+    extra["OTHER_LANG"], extra["OTHER_PAGE"] = other, link(root, LANGS[other][page])
     footer = (TPL / "footer.html").read_text(encoding="utf8")
     extra["FOOTER"] = i18n.render(footer, strings(lang), root, extra)
     return extra

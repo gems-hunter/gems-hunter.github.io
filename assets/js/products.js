@@ -69,6 +69,7 @@
     $('#lb-badges').innerHTML=$('.badges',card).innerHTML;
     var d=$('.desc',card); $('#lb-desc').textContent=d?d.textContent:''; $('#lb-desc').hidden=!d;
     $('#lb-acts').innerHTML=$('.acts',card).innerHTML;
+    var ll=$('#lb-lang'); ll.href=ll.href.split('#')[0]+'#'+li.id;
     if(lb.showModal) lb.showModal(); else lb.setAttribute('open','');
     history.replaceState(null,'',location.pathname+location.search+'#'+li.id);
   }

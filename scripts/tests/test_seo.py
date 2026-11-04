@@ -50,6 +50,15 @@ class SeoTest(unittest.TestCase):
         m = sw("index.html"); self.assertEqual(m.group(1) or m.group(2), "en/")
         m = sw("en/index.html"); self.assertEqual(m.group(1) or m.group(2), "../")
 
+    def test_lightbox_lang_link(self):
+        m = re.search(r'<a [^>]*id="lb-lang"[^>]*>', page("san-pham/index.html"))
+        self.assertIsNotNone(m)
+        self.assertIn('href="../en/products/"', m.group(0))
+        m = re.search(r'<a [^>]*id="lb-lang"[^>]*>', page("en/products/index.html"))
+        self.assertIn('href="../../san-pham/"', m.group(0))
+        js = (ROOT / "assets/js/products.js").read_text(encoding="utf8")
+        self.assertIn("lb-lang", js)
+
     def test_switch_keeps_hash_js(self):
         js = (ROOT / "assets/js/products.js").read_text(encoding="utf8")
         self.assertIn("data-lang-switch", js)
