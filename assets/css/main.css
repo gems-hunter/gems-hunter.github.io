@@ -67,7 +67,9 @@ em{font-style:italic;color:var(--aqua)}
 .hero h1 span{display:block;white-space:nowrap}
 .hero h1 .l2{padding-left:.9em}
 .hero h1 em{color:var(--aqua);text-shadow:0 0 40px rgba(127,214,226,.45)}
-.hero .lede{margin-top:32px;max-width:40ch;font-size:18px;color:var(--ink)}
+.hero .tagline{margin-top:20px;font:italic 300 clamp(18px,1.7vw,26px)/1.35 var(--serif);color:var(--aqua);letter-spacing:.005em}
+html[lang=vi] .hero h1{font-size:clamp(34px,3.9vw,66px)}
+.hero .lede{margin-top:24px;max-width:40ch;font-size:18px;color:var(--ink)}
 .hero .lede b{font-weight:500}
 .hero .ctas{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
 .hero .meta{margin-top:40px;display:flex;gap:28px;font-size:14px;color:var(--muted)}
@@ -220,6 +222,7 @@ em{font-style:italic;color:var(--aqua)}
 .foot{padding:70px var(--m) 36px;background:var(--night-2);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
 .foot .big{font:200 clamp(40px,5.4vw,88px)/1.05 var(--serif);letter-spacing:-.04em}
 .foot .big em{display:block}
+.foot .foot-tag{margin-top:14px;font:italic 300 clamp(17px,1.5vw,22px)/1.4 var(--serif);color:var(--muted)}
 .foot h3{font:500 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
 .foot ul{list-style:none;line-height:2.1}
 .foot ul a{text-decoration:none;transition:color .2s}
@@ -237,6 +240,7 @@ em{font-style:italic;color:var(--aqua)}
   .hero{grid-template-columns:1fr;padding-top:110px;gap:56px;text-align:left}
   .stage{height:50svh;order:-1;margin-top:10px}
   .hero h1{font-size:10.2vw}
+  html[lang=vi] .hero h1{font-size:7.6vw}
   .hero .kicker{letter-spacing:.14em;font-size:12px}
   .orb.o1{width:84px;height:84px;left:-40px}
   .orb.o2{width:70px;height:70px;right:-30px}

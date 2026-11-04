@@ -8,12 +8,93 @@ Chay:  python scripts/build.py
 
 Du lieu san pham: data/products.json (tao bang scripts/extract_products.py, co the sua tay).
 """
-import html, json, pathlib, re, unicodedata
+import html, json, pathlib, re, sys, unicodedata
 from datetime import date
+from urllib.parse import quote
 from PIL import Image, ImageOps
 
 SITE_URL = "https://gems-hunter.github.io"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from scripts import i18n  # noqa: E402
+
+TPL = ROOT / "scripts" / "templates"
+# moi ngon ngu: duong dan URL cua tung trang (tinh tu goc site)
+LANGS = {
+    "vi": {"home": "/", "products": "/san-pham/"},
+    "en": {"home": "/en/", "products": "/en/products/"},
+}
+
+
+def root_for(path):
+    """Tien to tuong doi tu trang `path` ve goc site: "/" -> "", "/en/" -> "../"."""
+    return "../" * path.strip("/").count("/") + ("../" if path.strip("/") else "")
+
+
+def page_file(path):
+    return ROOT / path.strip("/") / "index.html" if path.strip("/") else ROOT / "index.html"
+
+
+def link(root, path):
+    return root + path.lstrip("/") or "./"
+
+
+_STRINGS = {}
+
+
+def strings(lang):
+    if not _STRINGS:
+        vi, en = i18n.load_strings("vi"), i18n.load_strings("en")
+        i18n.check_parity(vi, en)
+        _STRINGS.update(vi=vi, en=en)
+    return _STRINGS[lang]
+
+
+def common_extra(lang, page, root):
+    L = LANGS[lang]
+    extra = {"SITE_URL": SITE_URL, "CANONICAL": SITE_URL + L[page],
+             "HOME": link(root, L["home"]), "PRODUCTS": link(root, L["products"])}
+    footer = (TPL / "footer.html").read_text(encoding="utf8")
+    extra["FOOTER"] = i18n.render(footer, strings(lang), root, extra)
+    return extra
+
+
+def write_page(path, html_text):
+    out = page_file(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html_text, encoding="utf8")
+    return out
+
+
+def build_home(lang):
+    S, path = strings(lang), LANGS[lang]["home"]
+    root = root_for(path)
+    extra = common_extra(lang, "home", root)
+    hero, picker = S["js.hero"], S["js.picker"]
+    e = html.escape
+    tab_lines = []
+    for i, p in enumerate(picker):
+        sel = "true" if i == 0 else "false"
+        ti = "" if i == 0 else ' tabindex="-1"'
+        tab_lines.append(f'    <button role="tab" aria-selected="{sel}"{ti} data-k="{i}">{e(p["tab"])}</button>')
+    tabs = "\n".join(tab_lines)
+    ld = {"@context": "https://schema.org", "@type": "JewelryStore", "name": "Gems Hunter",
+          "url": f"{SITE_URL}{path}", "inLanguage": S["meta.lang"],
+          "logo": f"{SITE_URL}/assets/img/logo-hunter.webp", "image": f"{SITE_URL}/assets/img/og.jpg",
+          "description": S["meta.ld_description"], "areaServed": S["meta.ld_area"],
+          "paymentAccepted": S["meta.ld_payment"],
+          "sameAs": ["https://www.instagram.com/_gems.hunter_/", "https://www.instagram.com/_gemsland_/",
+                     "https://www.threads.net/@_gemsland_"]}
+    raw_type = S["types.da-tho"] if "types.da-tho" in S else ("Đá thô" if lang == "vi" else "Raw stone")
+    extra.update({
+        "HERO_NAME": e(hero[0][0]), "HERO_DESC": e(hero[0][1]), "PICKER_TABS": tabs,
+        "PK_RAW_ALT": e(picker[0]["raw_alt"]), "PK_MADE_ALT": e(picker[0]["made_alt"]),
+        "PK_RAW_LABEL": e(picker[0]["raw_label"]), "PK_MADE_LABEL": e(picker[0]["made_label"]),
+        "PK_SAY": e(picker[0]["say"]), "RAW_TYPE_Q": quote(raw_type),
+        "JSONLD": json.dumps(ld, ensure_ascii=False), "JS": i18n.js_payload(S),
+    })
+    tpl = (TPL / "home.html").read_text(encoding="utf8")
+    return write_page(path, i18n.render(tpl, S, root, extra))
 IG = ROOT / "assets" / "instagram"
 IMG = ROOT / "assets" / "img"
 PIMG = IMG / "products"
@@ -159,6 +240,7 @@ def build_seo_files():
 
 if __name__ == "__main__":
     print("Anh trang chu..."); build_home_images()
+    print("Trang chu VI/EN..."); [build_home(l) for l in LANGS]
     print("Trang san pham..."); build_products()
     print("Sitemap/robots..."); build_seo_files()
     print("Xong.")

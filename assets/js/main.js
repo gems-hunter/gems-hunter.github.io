@@ -2,6 +2,8 @@
   document.body.classList.remove('no-js');
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function(s,c){return (c||document).querySelector(s)}, $$ = function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
+  // chuoi theo ngon ngu nhung trong trang (#i18n) va tien to duong dan ve goc site
+  var I18N = JSON.parse($('#i18n').textContent), ROOT = document.documentElement.dataset.root || '';
 
   // reveal
   var io = new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} })},{threshold:.12});
@@ -26,7 +28,7 @@
   requestAnimationFrame(draw);
 
   // hero crossfade + tag
-  var names=[['Aquamarine','dây macramé'],['Moonstone','vòng tay'],['Opal Ethiopia','8,1 carat'],['Citrine','mặt dây bạc']];
+  var names=I18N.hero;
   var imgs=$$('[data-fade] img'), k=0, timer;
   function next(){ imgs[k].classList.remove('on'); k=(k+1)%imgs.length; imgs[k].classList.add('on'); $('[data-name]').textContent=names[k][0]; $('[data-desc]').textContent=names[k][1]; }
   function go(){ if(!reduce && !timer) timer=setInterval(next,5200) } function stop(){ clearInterval(timer); timer=null }
@@ -59,13 +61,15 @@
   addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); onScroll();
 
   // picker
+  // anh + mau cua tung loai da; chu (alt, nhan, cau ke) lay tu I18N.picker cung thu tu
   var data=[
-    {g:'#7FD6E2', raw:['assets/img/aqua-raw.webp','Aquamarine thô','Gems Hunter · thanh tinh thể'], made:['assets/img/aqua-ring.webp','Nhẫn bạc aquamarine','Gems Land · nhẫn bạc'], say:'Đá của tháng Ba, xanh như nước biển nông. Giữ nguyên dáng thanh dài khi gắn lên nhẫn.'},
-    {g:'#B79BFF', raw:['assets/img/h-amethyst.webp','Hốc thạch anh tím','Gems Hunter · hốc geode'], made:['assets/img/amethyst-bracelet-book.webp','Vòng tay thạch anh tím','Gems Land · vòng tay'], say:'Từ một hốc tinh thể tím sẫm đến chuỗi hạt tròn trong, đặt lên trang sách như thói quen của tiệm.'},
-    {g:'#F2B95A', raw:['assets/img/h-citrine-raw.webp','Cụm citrine thô','Gems Hunter · cụm tinh thể'], made:['assets/img/citrine-pendant.webp','Mặt dây citrine','Gems Land · mặt dây bạc'], say:'Màu mật ong của citrine: khi thô thì lấm tấm như đường, khi mài giác thì bắt sáng từng mặt.'},
-    {g:'#DDE8F2', raw:['assets/img/h-clear-quartz.webp','Cụm thạch anh trắng','Gems Hunter · cụm tinh thể'], made:['assets/img/clear-quartz-bracelet.webp','Vòng tay thạch anh trắng','Gems Land · vòng tay'], say:'Trong như nước. Có viên còn giữ bao thể xanh nhỏ bên trong, dấu vết riêng của từng hạt.'},
-    {g:'#FF9FD0', raw:['assets/img/opals.webp','Opal Ethiopia mài giác','Gems Land · viên rời'], made:['assets/img/black-opal.webp','Mặt dây opal đen','Gems Land · mặt dây bạc'], say:'Opal chọn từng viên theo lửa màu. Bạn chọn viên, tiệm làm mặt dây theo dáng đá.'}
-  ];
+    {g:'#7FD6E2', raw:'aqua-raw', made:'aqua-ring'},
+    {g:'#B79BFF', raw:'h-amethyst', made:'amethyst-bracelet-book'},
+    {g:'#F2B95A', raw:'h-citrine-raw', made:'citrine-pendant'},
+    {g:'#DDE8F2', raw:'h-clear-quartz', made:'clear-quartz-bracelet'},
+    {g:'#FF9FD0', raw:'opals', made:'black-opal'}
+  ].map(function(d,i){ var t=I18N.picker[i], img=function(n){ return ROOT+'assets/img/'+n+'.webp' };
+    return {g:d.g, raw:[img(d.raw),t.raw_alt,t.raw_label], made:[img(d.made),t.made_alt,t.made_label], say:t.say} });
   var tabs=$$('.chips [role=tab]'), duo=$('.duo'), picker=$('.picker');
   data.forEach(function(d){ [d.raw[0],d.made[0]].forEach(function(s){ var i=new Image(); i.src=s; }) });
   function pick(i,focus){

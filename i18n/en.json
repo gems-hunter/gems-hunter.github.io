@@ -1,0 +1,78 @@
+{
+ "meta": {
+  "lang": "en", "og_locale": "en_US", "og_locale_alt": "vi_VN",
+  "title": "Gems Hunter — Handmade silver jewelry & natural raw stones",
+  "description": "Every stone is a story. Gems Hunter makes handmade silver jewelry from natural stones and keeps raw crystals and specimens. Hanoi and Ho Chi Minh City, Vietnam.",
+  "og_title": "Gems Hunter — Find the stone that finds you.",
+  "og_description": "Every stone is a story. Handmade silver jewelry in aquamarine, moonstone, opal, plus raw crystals and specimens. Hanoi and Ho Chi Minh City.",
+  "ld_description": "Handmade silver jewelry from natural stones, plus raw crystals and specimens.",
+  "ld_area": ["Hanoi", "Ho Chi Minh City"],
+  "ld_payment": "Bank transfer, cash on delivery"
+ },
+ "nav": {
+  "home": "Home", "products": "Shop", "collection": "Collections", "picker": "Stones",
+  "raw": "Raw stones", "about": "About", "order": "Order"
+ },
+ "home": {
+  "kicker": "Gems Hunter · silver jewelry & natural raw stones",
+  "h1_a": "Find the stone",
+  "h1_b": "that finds you.",
+  "tagline": "Every stone is a story.",
+  "lede": "Each piece is <b>a single natural stone</b>, left raw or lightly polished, then wrapped in silver and knotted by hand. Beside the jewelry, we keep raw crystals and specimens to display and to treasure.",
+  "cta_order": "Message us to order", "cta_products": "Browse the shop",
+  "meta_natural": "100% natural stones", "meta_cities": "Hanoi · Ho Chi Minh City",
+  "alt_aqua_macrame": "Raw aquamarine wand in a macramé net",
+  "alt_moonstone_bracelet": "Blue-flash moonstone bracelet",
+  "alt_eth_opal": "Ethiopian opal full of fire",
+  "alt_citrine_pendant": "Citrine pendant on a silver chain",
+  "scroll_hint": "SCROLL",
+  "marquee_label": "Albums",
+  "statement_label": "Our story",
+  "statement": "We look for stones that still carry the shape of the earth, then lay them on <em>an open page</em>, so every piece of jewelry has a story of its own.",
+  "alt_aqua_book": "Aquamarine necklace resting on a book page",
+  "ch_h": "Every album, <em>a chapter</em>",
+  "ch_p": "Our collections arrive album by album, each one a story. Pieces that have found their owner are marked; message us to hold any of the others.",
+  "ch1_no": "Chapter I", "ch1_alt": "Raw aquamarine necklace on a book page", "ch1_p": "A whole aquamarine wand on a silver bail, blue as shallow sea water.",
+  "ch2_no": "Chapter II", "ch2_alt": "Heart-shaped moonstone pendant", "ch2_p": "A moonstone heart with a blue sheen, like the moon on a still lake.",
+  "ch3_no": "Chapter III", "ch3_alt": "Black opal pendant with green flash", "ch3_p": "Green fire like snake scales inside a black opal, set in plain silver.",
+  "ch4_no": "Chapter IV", "ch4_alt": "Rose quartz pendant", "ch4_p": "A clear drop of rose quartz, shot in late sun among dried flowers.",
+  "ch5_no": "Chapter V", "ch5_alt": "8.1-carat Ethiopian opal", "ch5_stone": "8.1 ct · 30 × 16 mm", "ch5_p": "A cabochon opal with enough fire to become the pendant you imagine.",
+  "ch_more": "More chapters to come…", "ch_all": "See every piece",
+  "pk_h": "One stone, <em>two forms</em>",
+  "pk_sub": "Pick a stone to see it raw, and again once it has become jewelry in our hands.",
+  "pk_tablist": "Stones", "pk_raw": "Raw", "pk_made": "As jewelry",
+  "hu_h": "Raw stones,<br><em>shaped by the earth</em>",
+  "hu_p": "Raw gems, authentic value. Crystal clusters, agate slices, amethyst geodes, kept just as the earth made them: to display, to keep, or for us to turn into jewelry.",
+  "hu_btn": "See raw stones",
+  "alt_h_agate": "Agate slice", "alt_h_amethyst": "Amethyst geode", "alt_h_fluorite": "Fluorite tower",
+  "alt_h_citrine": "Raw citrine", "alt_h_clear": "Clear quartz cluster", "alt_h_ringbox": "Ring box carved from an agate geode", "alt_h_clusters": "Quartz clusters",
+  "pr_h": "From the earth <em>to your hands</em>",
+  "pr1_alt": "Raw stones on a wooden table among plants", "pr1_h": "Finding the stone", "pr1_p": "We choose each natural stone by hand and keep only the ones with the most beautiful shape and colour.",
+  "pr2_alt": "Wrapping silver wire around aquamarine", "pr2_h": "Made by hand", "pr2_p": "Each stone gets a bail, a silver wire wrap or a macramé net, following its own shape.",
+  "pr3_alt": "Moonstone pendant in a straw-paper box", "pr3_h": "On its way to you", "pr3_p": "Your piece is packed in a straw-paper box and sent off. Pay by bank transfer, or cash on delivery with a 50% deposit.",
+  "ab_logo_alt": "Gems Hunter logo",
+  "ab_h": "We are <em>Gems Hunter</em>",
+  "ab_p": "A small shop run by people who love stones. We hunt for natural stones that still hold the shape of the earth: some stay raw to be displayed, others are wrapped in silver and knotted into jewelry. Made with love.",
+  "fact_where": "Where", "fact_where_v": "Hanoi · Ho Chi Minh City",
+  "fact_pay": "Pay", "fact_pay_v": "Bank transfer · COD with 50% deposit",
+  "fact_order": "Order", "fact_order_v": "Instagram message",
+  "cta_h_a": "Jewelry", "cta_h_b": "or raw stone?",
+  "cta_btn": "Message the shop",
+  "cta_after": "Jewelry or raw stones, it's all one place. Orders are made by Instagram message."
+ },
+ "footer": {
+  "tagline": "Every stone is a story.",
+  "visit": "Find us", "all_products": "All pieces", "info": "Info",
+  "cities": "Hanoi · Ho Chi Minh City", "pay": "Bank transfer · COD with 50% deposit", "natural": "100% natural stones"
+ },
+ "js": {
+  "hero": [["Aquamarine", "macramé cord"], ["Moonstone", "bracelet"], ["Ethiopian Opal", "8.1 carats"], ["Citrine", "silver pendant"]],
+  "picker": [
+   {"tab": "Aquamarine", "raw_alt": "Raw aquamarine", "raw_label": "crystal wand", "made_alt": "Silver aquamarine ring", "made_label": "silver ring", "say": "March's birthstone, blue as shallow sea water. We keep its long wand shape when setting it on a ring."},
+   {"tab": "Amethyst", "raw_alt": "Amethyst geode", "raw_label": "geode", "made_alt": "Amethyst bracelet", "made_label": "bracelet", "say": "From a deep purple crystal cave to a string of clear round beads, laid on a book page as we always do."},
+   {"tab": "Citrine", "raw_alt": "Raw citrine cluster", "raw_label": "crystal cluster", "made_alt": "Citrine pendant", "made_label": "silver pendant", "say": "Citrine's honey colour: speckled like sugar when raw, catching light on every facet once cut."},
+   {"tab": "Clear Quartz", "raw_alt": "Clear quartz cluster", "raw_label": "crystal cluster", "made_alt": "Clear quartz bracelet", "made_label": "bracelet", "say": "Clear as water. Some beads still hold tiny green inclusions, a trace that belongs to each one alone."},
+   {"tab": "Opal", "raw_alt": "Faceted Ethiopian opals", "raw_label": "loose stones", "made_alt": "Black opal pendant", "made_label": "silver pendant", "say": "We choose each opal by its fire. You pick the stone, we shape the pendant around it."}
+  ]
+ }
+}

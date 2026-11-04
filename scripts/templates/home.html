@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="{{t:meta.lang}}" data-root="{{ROOT}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{t:meta.title}}</title>
+<meta name="description" content="{{a:meta.description}}">
+<link rel="canonical" href="{{CANONICAL}}">
+<meta name="theme-color" content="#060A20">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="{{t:meta.og_locale}}">
+<meta property="og:locale:alternate" content="{{t:meta.og_locale_alt}}">
+<meta property="og:site_name" content="Gems Hunter">
+<meta property="og:title" content="{{a:meta.og_title}}">
+<meta property="og:description" content="{{a:meta.og_description}}">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg">
+<link rel="icon" href="{{ROOT}}assets/img/logo-hunter.webp" type="image/webp">
+<script type="application/ld+json">{{JSONLD}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ROOT}}assets/css/main.css">
+</head>
+<body class="no-js">
+<div class="cursor-light" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="{{ROOT}}assets/img/logo-hunter.webp" alt="" width="636" height="636">GEMS HUNTER</a>
+  <ul>
+    <li><a href="{{PRODUCTS}}">{{t:nav.products}}</a></li>
+    <li><a href="#chuong">{{t:nav.collection}}</a></li>
+    <li><a href="#chon-da">{{t:nav.picker}}</a></li>
+    <li><a href="#hunter">{{t:nav.raw}}</a></li>
+    <li><a href="#tiem">{{t:nav.about}}</a></li>
+  </ul>
+  <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:nav.order}}</a>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="copy">
+    <p class="kicker rv">{{t:home.kicker}}</p>
+    <h1 class="rv" style="--d:1"><span>{{t:home.h1_a}}</span><span class="l2"><em>{{t:home.h1_b}}</em></span></h1>
+    <p class="tagline rv" style="--d:2">{{t:home.tagline}}</p>
+    <p class="lede rv" style="--d:2">{{t:home.lede}}</p>
+    <div class="ctas rv" style="--d:3">
+      <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:home.cta_order}} <span class="arr">→</span></a>
+      <a class="btn ghost" href="{{PRODUCTS}}">{{t:home.cta_products}}</a>
+    </div>
+    <div class="meta rv" style="--d:4"><span>{{t:home.meta_natural}}</span><span>{{t:home.meta_cities}}</span></div>
+  </div>
+  <div class="stage rv" style="--d:2">
+    <div class="ring" aria-hidden="true"></div>
+    <div class="arch" data-fade>
+      <img class="on" src="{{ROOT}}assets/img/aqua-macrame.webp" alt="{{a:home.alt_aqua_macrame}}" width="666" height="818">
+      <img src="{{ROOT}}assets/img/moonstone-bracelet.webp" alt="{{a:home.alt_moonstone_bracelet}}" width="688" height="909">
+      <img src="{{ROOT}}assets/img/eth-opal.webp" alt="{{a:home.alt_eth_opal}}" width="458" height="818">
+      <img src="{{ROOT}}assets/img/citrine-pendant.webp" alt="{{a:home.alt_citrine_pendant}}" width="790" height="818">
+    </div>
+    <div class="orb o1"><img src="{{ROOT}}assets/img/opals.webp" alt="" width="815" height="818"></div>
+    <div class="orb o2"><img src="{{ROOT}}assets/img/moonstone-heart.webp" alt="" width="611" height="818"></div>
+    <div class="orb o3"><img src="{{ROOT}}assets/img/citrine-pendant.webp" alt="" width="790" height="818"></div>
+    <p class="tag" aria-live="polite"><b data-name>{{HERO_NAME}}</b><span data-desc>{{HERO_DESC}}</span></p>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">{{t:home.scroll_hint}}<i></i></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-label="{{a:home.marquee_label}}: Sound of the Ocean, Heart of the Moonstone, Anaconda Black Opal, Alice in Wonderland, Amazed by the Nature, Ocean Breeze">
+  <div class="track" aria-hidden="true">
+    <span class="fill">Sound of the Ocean</span><span class="star">✦</span><span>Heart of the Moonstone</span><span class="star">✦</span><span class="fill">Anaconda Black Opal</span><span class="star">✦</span><span>Alice in Wonderland</span><span class="star">✦</span><span class="fill">Amazed by the Nature</span><span class="star">✦</span><span>Ocean Breeze</span><span class="star">✦</span>
+    <span class="fill">Sound of the Ocean</span><span class="star">✦</span><span>Heart of the Moonstone</span><span class="star">✦</span><span class="fill">Anaconda Black Opal</span><span class="star">✦</span><span>Alice in Wonderland</span><span class="star">✦</span><span class="fill">Amazed by the Nature</span><span class="star">✦</span><span>Ocean Breeze</span><span class="star">✦</span>
+  </div>
+</div>
+
+<!-- STATEMENT -->
+<section class="statement" aria-label="{{a:home.statement_label}}">
+  <p data-words>{{t:home.statement}}</p>
+  <figure class="rv">
+    <div class="arch-sm"><img data-par="0.12" src="{{ROOT}}assets/img/aqua-necklace-book.webp" alt="{{a:home.alt_aqua_book}}" width="688" height="909" loading="lazy"></div>
+    <small>Sound of the Ocean · aquamarine</small>
+  </figure>
+</section>
+
+<!-- CHAPTERS -->
+<section class="chapters" id="chuong" style="--n:5" aria-labelledby="ch-h">
+  <div class="pin">
+    <div class="head">
+      <h2 id="ch-h" class="rv">{{t:home.ch_h}}</h2>
+      <p class="rv" style="--d:1">{{t:home.ch_p}}</p>
+    </div>
+    <div class="rail">
+      <article class="card" style="--c:#7FD6E2">
+        <div class="halo"></div>
+        <div class="frame"><img src="{{ROOT}}assets/img/aqua-necklace-book.webp" alt="{{a:home.ch1_alt}}" width="688" height="909" loading="lazy"><span class="stone">Aquamarine</span></div>
+        <p class="ch">{{t:home.ch1_no}}</p><h3>Sound of the Ocean</h3>
+        <p>{{t:home.ch1_p}}</p>
+      </article>
+      <article class="card" style="--c:#9FC6FF">
+        <div class="halo"></div>
+        <div class="frame"><img src="{{ROOT}}assets/img/moonstone-heart.webp" alt="{{a:home.ch2_alt}}" width="611" height="818" loading="lazy"><span class="stone">Moonstone</span></div>
+        <p class="ch">{{t:home.ch2_no}}</p><h3>Heart of the Moonstone</h3>
+        <p>{{t:home.ch2_p}}</p>
+      </article>
+      <article class="card" style="--c:#3BE07A">
+        <div class="halo"></div>
+        <div class="frame"><img src="{{ROOT}}assets/img/black-opal.webp" alt="{{a:home.ch3_alt}}" width="680" height="909" loading="lazy"><span class="stone">Black Opal</span></div>
+        <p class="ch">{{t:home.ch3_no}}</p><h3>Anaconda Black Opal</h3>
+        <p>{{t:home.ch3_p}}</p>
+      </article>
+      <article class="card" style="--c:#E9BEDF">
+        <div class="halo"></div>
+        <div class="frame"><img src="{{ROOT}}assets/img/rose-quartz.webp" alt="{{a:home.ch4_alt}}" width="611" height="818" loading="lazy"><span class="stone">Rose Quartz</span></div>
+        <p class="ch">{{t:home.ch4_no}}</p><h3>Rose Quartz</h3>
+        <p>{{t:home.ch4_p}}</p>
+      </article>
+      <article class="card" style="--c:#FFB37A">
+        <div class="halo"></div>
+        <div class="frame"><img src="{{ROOT}}assets/img/eth-opal.webp" alt="{{a:home.ch5_alt}}" width="458" height="818" loading="lazy"><span class="stone">{{t:home.ch5_stone}}</span></div>
+        <p class="ch">{{t:home.ch5_no}}</p><h3>Ethiopian Opal</h3>
+        <p>{{t:home.ch5_p}}</p>
+      </article>
+      <div class="card end">
+        <h3>{{t:home.ch_more}}</h3>
+        <a class="btn" href="{{PRODUCTS}}">{{t:home.ch_all}} <span class="arr">→</span></a>
+      </div>
+    </div>
+    <div class="bar" aria-hidden="true"><i></i></div>
+  </div>
+</section>
+
+<!-- PICKER -->
+<section class="picker" id="chon-da" aria-labelledby="pk-h">
+  <h2 id="pk-h" class="rv">{{t:home.pk_h}}</h2>
+  <p class="sub rv" style="--d:1">{{t:home.pk_sub}}</p>
+  <div class="chips rv" style="--d:2" role="tablist" aria-label="{{a:home.pk_tablist}}">
+{{PICKER_TABS}}
+  </div>
+  <div role="tabpanel" aria-live="polite">
+    <div class="duo">
+      <figure class="raw"><img id="d-raw" src="{{ROOT}}assets/img/aqua-raw.webp" alt="{{PK_RAW_ALT}}" width="458" height="818"></figure>
+      <figure class="made"><img id="d-made" src="{{ROOT}}assets/img/aqua-ring.webp" alt="{{PK_MADE_ALT}}" width="688" height="909"></figure>
+    </div>
+    <div class="labels">
+      <div><b>{{t:home.pk_raw}}</b><span id="l-raw">{{PK_RAW_LABEL}}</span></div>
+      <div><b>{{t:home.pk_made}}</b><span id="l-made">{{PK_MADE_LABEL}}</span></div>
+    </div>
+    <p class="say" id="say">{{PK_SAY}}</p>
+  </div>
+</section>
+
+<!-- RAW STONES -->
+<section class="hunter" id="hunter" aria-labelledby="hu-h">
+  <div class="center">
+    <h2 id="hu-h" class="rv" style="--d:1">{{t:home.hu_h}}</h2>
+    <p class="rv" style="--d:2">{{t:home.hu_p}}</p>
+    <a class="btn ghost rv" style="--d:3" href="{{PRODUCTS}}?loai={{RAW_TYPE_Q}}">{{t:home.hu_btn}} <span class="arr">→</span></a>
+  </div>
+  <div class="grid">
+    <div class="fl archy f1" data-par="-0.18"><img src="{{ROOT}}assets/img/h-agate.webp" alt="{{a:home.alt_h_agate}}" width="611" height="818" loading="lazy"></div>
+    <div class="fl circle f2" data-par="0.1"><img src="{{ROOT}}assets/img/h-amethyst.webp" alt="{{a:home.alt_h_amethyst}}" width="652" height="818" loading="lazy"></div>
+    <div class="fl archy f3" data-par="-0.12"><img src="{{ROOT}}assets/img/h-fluorite.webp" alt="{{a:home.alt_h_fluorite}}" width="652" height="818" loading="lazy"></div>
+    <div class="fl circle f4" data-par="0.16"><img src="{{ROOT}}assets/img/h-citrine-raw.webp" alt="{{a:home.alt_h_citrine}}" width="652" height="818" loading="lazy"></div>
+    <div class="fl archy f5" data-par="0.08"><img src="{{ROOT}}assets/img/h-clear-quartz.webp" alt="{{a:home.alt_h_clear}}" width="611" height="818" loading="lazy"></div>
+    <div class="fl archy f6" data-par="-0.2"><img src="{{ROOT}}assets/img/h-agate-ringbox.webp" alt="{{a:home.alt_h_ringbox}}" width="652" height="818" loading="lazy"></div>
+    <div class="fl circle f7" data-par="0.22"><img src="{{ROOT}}assets/img/h-clusters.webp" alt="{{a:home.alt_h_clusters}}" width="611" height="818" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" aria-labelledby="pr-h">
+  <h2 id="pr-h" class="rv">{{t:home.pr_h}}</h2>
+  <div class="steps">
+    <article class="step rv">
+      <div class="frame"><img src="{{ROOT}}assets/img/h-hanoi-table.webp" alt="{{a:home.pr1_alt}}" width="611" height="818" loading="lazy"></div>
+      <h3><em>i.</em>{{t:home.pr1_h}}</h3>
+      <p>{{t:home.pr1_p}}</p>
+    </article>
+    <article class="step rv" style="--d:1">
+      <div class="frame"><img src="{{ROOT}}assets/img/aqua-wire.webp" alt="{{a:home.pr2_alt}}" width="611" height="818" loading="lazy"></div>
+      <h3><em>ii.</em>{{t:home.pr2_h}}</h3>
+      <p>{{t:home.pr2_p}}</p>
+    </article>
+    <article class="step rv" style="--d:2">
+      <div class="frame"><img src="{{ROOT}}assets/img/moonstone-heart.webp" alt="{{a:home.pr3_alt}}" width="611" height="818" loading="lazy"></div>
+      <h3><em>iii.</em>{{t:home.pr3_h}}</h3>
+      <p>{{t:home.pr3_p}}</p>
+    </article>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="tiem" aria-labelledby="ab-h">
+  <div class="seal rv"><img src="{{ROOT}}assets/img/logo-hunter.webp" alt="{{a:home.ab_logo_alt}}" width="636" height="636" loading="lazy"></div>
+  <div>
+    <h2 id="ab-h" class="rv">{{t:home.ab_h}}</h2>
+    <p class="rv" style="--d:1">{{t:home.ab_p}}</p>
+    <div class="facts rv" style="--d:2">
+      <span><b>{{t:home.fact_where}}</b>{{t:home.fact_where_v}}</span>
+      <span><b>{{t:home.fact_pay}}</b>{{t:home.fact_pay_v}}</span>
+      <span><b>{{t:home.fact_order}}</b>{{t:home.fact_order_v}}</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" aria-labelledby="cta-h">
+  <h2 id="cta-h" class="rv"><span>{{t:home.cta_h_a}}</span><span>{{t:home.cta_h_b}}</span></h2>
+  <div class="moon rv"><img src="{{ROOT}}assets/img/moonstone-bracelet.webp" alt="{{a:home.alt_moonstone_bracelet}}" width="688" height="909" loading="lazy"></div>
+  <div class="choice rv" style="--d:1">
+    <a class="btn" href="https://ig.me/m/_gems.hunter_">{{t:home.cta_btn}} <span class="arr">→</span></a>
+    <a class="btn ghost" href="{{PRODUCTS}}">{{t:home.cta_products}}</a>
+  </div>
+  <p class="after rv" style="--d:2">{{t:home.cta_after}}</p>
+</section>
+</main>
+
+{{FOOTER}}
+
+<script type="application/json" id="i18n">{{JS}}</script>
+<script src="{{ROOT}}assets/js/main.js" defer></script>
+</body>
+</html>

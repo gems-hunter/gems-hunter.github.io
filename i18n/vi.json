@@ -1,0 +1,78 @@
+{
+ "meta": {
+  "lang": "vi", "og_locale": "vi_VN", "og_locale_alt": "en_US",
+  "title": "Gems Hunter — Trang sức bạc làm tay & đá thô tự nhiên",
+  "description": "Mỗi viên đá là một câu chuyện. Gems Hunter làm trang sức bạc thủ công từ đá tự nhiên và có đá thô nguyên khối. Hà Nội và TP.HCM.",
+  "og_title": "Gems Hunter — Ngày xửa ngày xưa, có viên đá đang tìm bạn.",
+  "og_description": "Mỗi viên đá là một câu chuyện. Trang sức bạc làm tay từ aquamarine, moonstone, opal và đá thô nguyên khối. Hà Nội và TP.HCM.",
+  "ld_description": "Trang sức bạc làm tay từ đá tự nhiên và đá thô nguyên khối.",
+  "ld_area": ["Hà Nội", "TP. Hồ Chí Minh"],
+  "ld_payment": "Chuyển khoản, COD"
+ },
+ "nav": {
+  "home": "Trang chủ", "products": "Sản phẩm", "collection": "Bộ sưu tập", "picker": "Chọn đá",
+  "raw": "Đá thô", "about": "Về tiệm", "order": "Đặt hàng"
+ },
+ "home": {
+  "kicker": "Gems Hunter · trang sức bạc & đá thô tự nhiên",
+  "h1_a": "Ngày xửa ngày xưa,",
+  "h1_b": "có viên đá đang tìm bạn.",
+  "tagline": "Mỗi viên đá là một câu chuyện.",
+  "lede": "Mỗi món là <b>một viên đá tự nhiên</b>, giữ dáng thô hoặc mài nhẹ, rồi được uốn bạc, thắt dây bằng tay. Bên cạnh trang sức, tiệm còn có đá thô nguyên khối để bày và để giữ.",
+  "cta_order": "Nhắn tin đặt hàng", "cta_products": "Xem sản phẩm",
+  "meta_natural": "100% đá tự nhiên", "meta_cities": "Hà Nội · TP.HCM",
+  "alt_aqua_macrame": "Thanh aquamarine thô thắt lưới macramé",
+  "alt_moonstone_bracelet": "Vòng tay moonstone ánh xanh",
+  "alt_eth_opal": "Viên opal Ethiopia ánh lửa",
+  "alt_citrine_pendant": "Mặt dây citrine trên xích bạc",
+  "scroll_hint": "CUỘN XUỐNG",
+  "marquee_label": "Các album",
+  "statement_label": "Câu chuyện",
+  "statement": "Chúng tớ đi tìm những viên đá còn nguyên dáng đất, rồi đặt chúng lên <em>một trang sách đang mở</em>, để mỗi món trang sức có câu chuyện của riêng nó.",
+  "alt_aqua_book": "Vòng aquamarine nằm trên trang sách",
+  "ch_h": "Mỗi album, <em>một chương</em>",
+  "ch_p": "Bộ sưu tập ra theo từng album, mỗi album một câu chuyện. Món nào đã có chủ sẽ được đánh dấu, món còn lại nhắn tin để giữ.",
+  "ch1_no": "Chương I", "ch1_alt": "Vòng cổ aquamarine thô trên trang sách", "ch1_p": "Thanh aquamarine nguyên khối, bắt khoen bạc, xanh như nước biển nông.",
+  "ch2_no": "Chương II", "ch2_alt": "Mặt dây moonstone hình tim", "ch2_p": "Trái tim moonstone ánh xanh lam, như vầng trăng trên mặt hồ.",
+  "ch3_no": "Chương III", "ch3_alt": "Mặt dây opal đen ánh xanh lục", "ch3_p": "Ánh xanh lục như vảy trăn trong viên opal đen, đóng khung bạc trơn.",
+  "ch4_no": "Chương IV", "ch4_alt": "Mặt dây thạch anh hồng", "ch4_p": "Giọt thạch anh hồng trong veo, chụp dưới nắng chiều và bóng hoa khô.",
+  "ch5_no": "Chương V", "ch5_alt": "Viên opal Ethiopia 8,1 carat", "ch5_stone": "8,1 ct · 30 × 16 mm", "ch5_p": "Viên opal mài cabochon, đủ lửa để làm mặt dây theo ý bạn.",
+  "ch_more": "Còn nhiều chương nữa…", "ch_all": "Xem tất cả sản phẩm",
+  "pk_h": "Một viên đá, <em>hai hình hài</em>",
+  "pk_sub": "Chọn một loại đá để xem nó lúc còn thô, và lúc đã thành trang sức trong tay tiệm.",
+  "pk_tablist": "Loại đá", "pk_raw": "Lúc còn thô", "pk_made": "Lúc thành trang sức",
+  "hu_h": "Đá thô,<br><em>nguyên dáng từ đất</em>",
+  "hu_p": "Raw gems, authentic value. Cụm tinh thể, lát mã não, hốc thạch anh tím, giữ nguyên dáng từ lòng đất: để bày, để giữ, hoặc để tiệm làm thành trang sức.",
+  "hu_btn": "Xem đá thô",
+  "alt_h_agate": "Lát mã não", "alt_h_amethyst": "Hốc thạch anh tím", "alt_h_fluorite": "Trụ fluorite",
+  "alt_h_citrine": "Citrine thô", "alt_h_clear": "Cụm thạch anh trắng", "alt_h_ringbox": "Hộp nhẫn từ hốc mã não", "alt_h_clusters": "Cụm thạch anh",
+  "pr_h": "Từ đất <em>đến tay bạn</em>",
+  "pr1_alt": "Đá thô bày trên bàn gỗ giữa cây xanh", "pr1_h": "Tìm đá", "pr1_p": "Tiệm chọn từng viên đá thô tự nhiên, giữ lại những viên có dáng và màu đẹp nhất.",
+  "pr2_alt": "Quấn dây bạc quanh aquamarine", "pr2_h": "Làm bằng tay", "pr2_p": "Đá được bắt khoen, quấn dây bạc hoặc thắt lưới macramé, theo dáng riêng của từng viên.",
+  "pr3_alt": "Mặt dây moonstone trong hộp giấy rơm", "pr3_h": "Gửi đến bạn", "pr3_p": "Món đồ nằm trong hộp giấy rơm và lên đường. Chuyển khoản, hoặc COD với cọc 50%.",
+  "ab_logo_alt": "Logo Gems Hunter",
+  "ab_h": "Chúng tớ là <em>Gems Hunter</em>",
+  "ab_p": "Một tiệm nhỏ của những người mê đá. Chúng tớ đi săn những viên đá tự nhiên còn nguyên dáng đất: viên thì giữ nguyên để bày, viên thì được uốn bạc, thắt dây thành trang sức. Made with love.",
+  "fact_where": "Ở", "fact_where_v": "Hà Nội · TP.HCM",
+  "fact_pay": "Trả", "fact_pay_v": "Chuyển khoản · COD cọc 50%",
+  "fact_order": "Đặt", "fact_order_v": "Tin nhắn Instagram",
+  "cta_h_a": "Trang sức", "cta_h_b": "hay đá thô?",
+  "cta_btn": "Nhắn tin cho tiệm",
+  "cta_after": "Trang sức hay đá thô đều hỏi chung một chỗ, chốt đơn qua tin nhắn Instagram."
+ },
+ "footer": {
+  "tagline": "Mỗi viên đá là một câu chuyện.",
+  "visit": "Ghé tiệm", "all_products": "Tất cả sản phẩm", "info": "Thông tin",
+  "cities": "Hà Nội · TP.HCM", "pay": "Chuyển khoản · COD cọc 50%", "natural": "100% đá tự nhiên"
+ },
+ "js": {
+  "hero": [["Aquamarine", "dây macramé"], ["Moonstone", "vòng tay"], ["Opal Ethiopia", "8,1 carat"], ["Citrine", "mặt dây bạc"]],
+  "picker": [
+   {"tab": "Aquamarine", "raw_alt": "Aquamarine thô", "raw_label": "thanh tinh thể", "made_alt": "Nhẫn bạc aquamarine", "made_label": "nhẫn bạc", "say": "Đá của tháng Ba, xanh như nước biển nông. Giữ nguyên dáng thanh dài khi gắn lên nhẫn."},
+   {"tab": "Thạch anh tím", "raw_alt": "Hốc thạch anh tím", "raw_label": "hốc geode", "made_alt": "Vòng tay thạch anh tím", "made_label": "vòng tay", "say": "Từ một hốc tinh thể tím sẫm đến chuỗi hạt tròn trong, đặt lên trang sách như thói quen của tiệm."},
+   {"tab": "Citrine", "raw_alt": "Cụm citrine thô", "raw_label": "cụm tinh thể", "made_alt": "Mặt dây citrine", "made_label": "mặt dây bạc", "say": "Màu mật ong của citrine: khi thô thì lấm tấm như đường, khi mài giác thì bắt sáng từng mặt."},
+   {"tab": "Thạch anh trắng", "raw_alt": "Cụm thạch anh trắng", "raw_label": "cụm tinh thể", "made_alt": "Vòng tay thạch anh trắng", "made_label": "vòng tay", "say": "Trong như nước. Có viên còn giữ bao thể xanh nhỏ bên trong, dấu vết riêng của từng hạt."},
+   {"tab": "Opal", "raw_alt": "Opal Ethiopia mài giác", "raw_label": "viên rời", "made_alt": "Mặt dây opal đen", "made_label": "mặt dây bạc", "say": "Opal chọn từng viên theo lửa màu. Bạn chọn viên, tiệm làm mặt dây theo dáng đá."}
+  ]
+ }
+}
