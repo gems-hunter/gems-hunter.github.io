@@ -170,10 +170,19 @@ def load_en():
     return json.loads(f.read_text(encoding="utf8")) if f.exists() else {}
 
 
+BRAND_RX = re.compile(r"gems ?land|gemshunter", re.I)
+
+
+def one_brand(text):
+    """Caption cu goi tiem la Gemsland; website chi dung mot ten Gems Hunter."""
+    return BRAND_RX.sub("Gems Hunter", text or "")
+
+
 def localize(p, lang, en_data, S):
     q = dict(p)
+    q["name"], q["desc"] = one_brand(p["name"]), one_brand(p.get("desc", ""))
     stone = p.get("stone") or OTHER_STONE
-    q.update(vi_name=p["name"], vi_type=label(strings("vi"), "types", p["type"]),
+    q.update(vi_name=q["name"], vi_type=label(strings("vi"), "types", p["type"]),
              vi_stone=p.get("stone") or "",
              type_label=label(S, "types", p["type"]), stone_label=label(S, "stones", stone),
              has_stone=bool(p.get("stone")))

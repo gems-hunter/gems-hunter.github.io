@@ -88,7 +88,7 @@ def parse(p, brand):
     is_feedback = bool(re.search(r"feedback", caption[:200], re.I))
     is_product = bool(stone or kind not in ("Trang sức",)) and not is_feedback
     if not name:
-        name = " ".join(x for x in [kind if kind not in ("Trang sức",) else "", stone or ""] if x) or "Món đồ từ " + ("Gems Hunter" if brand == "gemshunter" else "Gems Land")
+        name = " ".join(x for x in [kind if kind not in ("Trang sức",) else "", stone or ""] if x) or "Món đồ từ Gems Hunter"
     return {
         "id": p["code"], "brand": brand, "name": name, "stone": stone, "type": kind, "status": status,
         "desc": desc[:260], "image": "assets/instagram/" + p["file"], "permalink": p["permalink"],

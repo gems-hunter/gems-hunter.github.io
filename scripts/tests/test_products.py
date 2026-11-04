@@ -1,6 +1,6 @@
 import json, re, unittest
 from scripts import build
-from scripts.tests.helpers import page, igme_targets
+from scripts.tests.helpers import page, igme_targets, strip_allowed_brand_zones
 
 VI, EN = "san-pham/index.html", "en/products/index.html"
 
@@ -47,6 +47,11 @@ class ProductsPageTest(unittest.TestCase):
     def test_order_buttons(self):
         for rel in (VI, EN):
             self.assertEqual(igme_targets(page(rel)), {"_gems.hunter_"}, rel)
+
+    def test_brand_only_in_footer(self):
+        for rel in (VI, EN):
+            body = re.sub(r'href="https://www\.instagram\.com/p/[^"]+"', "", strip_allowed_brand_zones(page(rel)))
+            self.assertEqual(re.findall(r".{20}gems ?land.{20}", body, re.I)[:3], [], rel)
 
     def test_count_label_in_js(self):
         self.assertIn('"count": "{n} pieces"', page(EN))
