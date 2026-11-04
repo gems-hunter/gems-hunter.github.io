@@ -4,3 +4,4 @@ __pycache__/
 # story noi bat (co anh chat feedback cua khach) chi luu tren may, khong dua len web
 assets/instagram/*/stories/
 assets/instagram/*/stories.json
+.superpowers/
