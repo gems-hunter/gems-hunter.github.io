@@ -1,11 +1,18 @@
 """Kiem tra site sau khi build:  python scripts/check_site.py
 Thoat 0 va in OK khi dat; thoat 1 va liet ke loi khi khong dat."""
-import pathlib, re, sys
+import pathlib, re, sys, unicodedata
 from urllib.parse import unquote, urlsplit
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ["index.html", "san-pham/index.html", "en/index.html", "en/products/index.html"]
-VN = re.compile("[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]", re.I)
+VN_MARKS = {"\u0300", "\u0301", "\u0302", "\u0303", "\u0306", "\u0309", "\u0323", "\u031b"}
+LOANWORDS = re.compile(r"macram[eé]", re.I)
+
+
+def has_vietnamese(text):
+    """Co dau tieng Viet (dau thanh, mu, moc, trang, hoac chu đ). Bo qua tu muon nhu 'macramé'."""
+    t = unicodedata.normalize("NFD", LOANWORDS.sub("", text))
+    return "đ" in t.lower() or any(ch in VN_MARKS for ch in t)
 
 
 def brand_zone_free(h):
@@ -45,9 +52,9 @@ def check():
         if n[0] != n[1]:
             errors.append(f"so san pham lech VI={n[0]} EN={n[1]}")
         for rel in ("en/index.html", "en/products/index.html"):
-            body = re.sub(r'data-q="[^"]*"|<script.*?</script>|<footer.*?</footer>|<a [^>]*lang="vi"[^>]*>.*?</a>|Hà Nội|Nghệ An|Lục Yên|Yên Bái', "", html[rel], flags=re.S)
+            body = re.sub(r'data-q="[^"]*"|<script.*?</script>|<footer.*?</footer>|<a [^>]*lang="vi"[^>]*>.*?</a>|Hà Nội|Nghệ An|Lục Yên|Yên Bái|Thanh Hóa', "", html[rel], flags=re.S)
             body = re.sub(r"<[^>]+>", " ", body)
-            hits = sorted({m.group(0) for m in re.finditer(r"\S*%s\S*" % VN.pattern, body)})
+            hits = sorted({w for w in body.split() if has_vietnamese(w)})
             if hits:
                 warns.append(f"{rel}: con chu tieng Viet: {hits[:8]}")
     return errors, warns

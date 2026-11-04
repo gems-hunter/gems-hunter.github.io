@@ -172,7 +172,8 @@
     "say": "Opal chọn từng viên theo lửa màu. Bạn chọn viên, tiệm làm mặt dây theo dáng đá."
    }
   ],
-  "count": "{n} sản phẩm"
+  "count": "{n} sản phẩm",
+  "count_one": "1 sản phẩm"
  },
  "shop": {
   "title": "Sản phẩm — Trang sức bạc & đá thô tự nhiên | Gems Hunter",

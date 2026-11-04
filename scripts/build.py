@@ -213,6 +213,8 @@ def localize(p, lang, en_data, S):
         tr = en_data.get(p["id"])
         if tr and tr.get("name"):
             q["name"], q["desc"] = tr["name"], tr.get("desc", "")
+            if p.get("desc") and not tr.get("desc"):
+                q["_missing_en_desc"] = True
         else:
             q["_missing_en"] = True
     return q
@@ -270,6 +272,9 @@ def build_products(lang):
     missing = sum(1 for p in items if p.get("_missing_en"))
     if missing:
         print(f"  ! thieu ban dich EN: {missing} san pham")
+    no_desc = sum(1 for p in items if p.get("_missing_en_desc"))
+    if no_desc:
+        print(f"  ! thieu mo ta EN (co ten, chua co desc): {no_desc} san pham")
     e = html.escape
     types, stones = {}, {}
     for p in items:
@@ -294,7 +299,7 @@ def build_products(lang):
     extra.update({
         "DESCRIPTION": e(S["shop.description"].replace("{n}", str(n))),
         "LEDE": S["shop.lede"].replace("{n}", str(n)).replace("{s}", str(ns)),
-        "COUNT": str(n), "COUNT_TEXT": e(S["js.count"].replace("{n}", str(n))),
+        "COUNT": str(n), "COUNT_TEXT": e(S["js.count_one"] if n == 1 else S["js.count"].replace("{n}", str(n))),
         "STONE_CHIPS": chips, "TYPE_OPTIONS": type_opts,
         "CARDS": "\n".join(card(p, i, lang, S, root) for i, p in enumerate(items)),
         "JSONLD": json.dumps(ld, ensure_ascii=False), "JS": i18n.js_payload(S),

@@ -39,7 +39,7 @@
       if(ok) n++;
       li.hidden=!ok || (ok && n>shown);
     });
-    countEl.textContent=I18N.count.replace('{n}',n);
+    countEl.textContent=n===1?I18N.count_one:I18N.count.replace('{n}',n);
     more.hidden=n<=shown; empty.hidden=n>0;
     var p=new URLSearchParams();
     if(state.type) p.set('loai',state.type); if(state.stone) p.set('da',state.stone); if(state.q) p.set('q',state.q);

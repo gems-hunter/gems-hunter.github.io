@@ -1,7 +1,7 @@
 import json, re, unittest
 from scripts.tests.helpers import ROOT
 
-VN = re.compile("[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]", re.I)
+from scripts.check_site import has_vietnamese  # noqa: E402
 PARTICLE = re.compile(r"(?<!\w)ạa*(?!\w)")
 SENTENCE_BITS = ("Trượt sang", "ủng hộ", "chốt đơn", "nhanh tay", "hạt dẻ", "chần chừ")
 
@@ -23,7 +23,7 @@ class ContentTest(unittest.TestCase):
         self.assertEqual(no_desc, [])
 
     def test_en_names_no_vietnamese(self):
-        bad = {k: v["name"] for k, v in en().items() if VN.search(v.get("name", ""))}
+        bad = {k: v["name"] for k, v in en().items() if has_vietnamese(v.get("name", ""))}
         self.assertEqual(bad, {})
 
     def test_vi_names_not_sentences(self):

@@ -172,7 +172,8 @@
     "say": "We choose each opal by its fire. You pick the stone, we shape the pendant around it."
    }
   ],
-  "count": "{n} pieces"
+  "count": "{n} pieces",
+  "count_one": "1 piece"
  },
  "shop": {
   "title": "Shop — Handmade silver jewelry & natural raw stones | Gems Hunter",
