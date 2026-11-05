@@ -6,7 +6,8 @@ Chay:  python scripts/build.py
 - Sinh trang san pham tinh: san-pham/index.html (moi san pham deu nam san trong HTML -> tot cho SEO)
 - Sinh sitemap.xml va robots.txt
 
-Du lieu san pham: data/products.json (tao bang scripts/extract_products.py, co the sua tay).
+Du lieu san pham: data/products.json (tao bang scripts/extract_products.py, co the sua tay)
++ data/manual.json (san pham chi co tren web, them qua che do ?feedback -> PR inbox/, xem CLAUDE.md).
 """
 import html, json, pathlib, re, sys, unicodedata
 from datetime import date
@@ -237,6 +238,8 @@ def card(p, i, lang, S, root):
         badges += f'<span class="chip sold">{e(S["shop.sold"])}</span>'
     desc = f'<p class="desc">{e(p["desc"])}</p>' if p.get("desc") else ""
     eager = 'fetchpriority="high"' if i < 4 else 'loading="lazy"'
+    ig = (f'<a class="ig" href="{e(p["permalink"])}" rel="nofollow noopener" target="_blank" '
+          f'aria-label="{e(S["shop.ig_post"])}">Instagram ↗</a>') if p.get("permalink") else ""
     img = f"{root}assets/img/products/{pid}"
     ask = S["shop.ask_similar"] if sold else S["shop.ask_available"]
     return f"""<li class="item" id="sp-{pid}" data-type="{e(t)}" data-stone="{e(st)}" data-q="{search}">
@@ -251,16 +254,29 @@ def card(p, i, lang, S, root):
       {desc}
       <div class="acts">
         <a class="btn sm" href="https://ig.me/m/_gemsland_" rel="nofollow">{e(ask)}</a>
-        <a class="ig" href="{e(p["permalink"])}" rel="nofollow noopener" target="_blank" aria-label="{e(S['shop.ig_post'])}">Instagram ↗</a>
+        {ig}
       </div>
     </div>
   </article>
 </li>"""
 
 
+def manual_items():
+    """San pham chi co tren web (data/manual.json), moi nhat dung dau. Anh goc o assets/img-src/products/."""
+    f = ROOT / "data" / "manual.json"
+    data = json.loads(f.read_text(encoding="utf8")) if f.exists() else []
+    out = []
+    for p in data:
+        q = {"stone": "", "status": "available", "desc": "", "permalink": "", "is_product": True, **p}
+        if not (ROOT / q["image"]).exists():
+            print("  ! thieu anh san pham web", q["id"], q["image"]); continue
+        out.append(q)
+    return sorted(out, key=lambda q: q.get("date", ""), reverse=True)
+
+
 def product_items():
     data = json.loads((ROOT / "data" / "products.json").read_text(encoding="utf8"))
-    items = [p for p in data if p.get("is_product")]
+    items = manual_items() + [p for p in data if p.get("is_product")]
     for p in items:
         src = ROOT / p["image"]
         save_webp(src, PIMG / f'{p["id"]}-480.webp', 600, 78)

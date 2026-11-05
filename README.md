@@ -57,8 +57,23 @@ Mở `https://gemsland.github.io/?feedback` trên **máy tính** để bật [Ag
 Nội dung gửi gồm ghi chú, selector của phần tử, trang, kích thước màn hình. Nơi nhận cấu hình trong `CONFIG` ở `assets/js/feedback.js`:
 - **Email**: lấy access key ở https://web3forms.com rồi điền `web3formsKey`.
 - **Telegram**: deploy Cloudflare Worker trong `scripts/feedback-relay/` (hướng dẫn ở đầu `worker.js`), điền URL worker vào `telegramRelay`. Bot token chỉ nằm trong secret của worker.
+- **GitHub issue**: nếu worker có `GITHUB_TOKEN` (quyền *Issues: Read and write*), mỗi lần gửi góp ý còn được thêm thành comment vào issue đang mở mới nhất có nhãn `feedback`; chưa có thì worker tự mở issue mới. Đóng issue khi xử lý xong, lần sau sẽ mở issue mới. Link issue được gửi kèm trong tin Telegram.
 
 `assets/js/vendor/agentation.mjs` là bản đóng gói sẵn Agentation + React. Cập nhật: `cd scripts/feedback && npm install && npm run build`.
+
+### Thêm sản phẩm mới từ web
+Ở chế độ `?feedback` có nút **＋ Thêm sản phẩm** (góc trái dưới, dùng được cả trên điện thoại): chọn ảnh, điền tên, loại đá, loại món, trạng thái, mô tả và **mã bí mật**. Luồng:
+1. Trình duyệt nén ảnh rồi gửi tới worker (`scripts/feedback-relay/worker.js`, đường dẫn `/upload`).
+2. Worker kiểm tra mã, tạo nhánh `inbox/<ngày-giờ>-<tên>` chứa `photo.jpg` + `info.json`, mở Pull Request và báo Telegram.
+3. GitHub Action `.github/workflows/claude-inbox.yml` chạy Claude theo mục "Xử lý inbox" trong `CLAUDE.md`: đưa ảnh vào `assets/img-src/products/`, thêm vào `data/manual.json` + bản tiếng Anh, build, test, commit vào PR, comment tóm tắt.
+4. Xem lại PR, bấm **Merge** là lên web.
+
+Cài đặt một lần:
+- Worker: `npx wrangler secret put GITHUB_TOKEN` (fine-grained token, chỉ repo này, quyền *Contents*, *Pull requests* và *Issues*: Read and write) và `npx wrangler secret put UPLOAD_CODE` (mã bí mật), rồi `npx wrangler deploy`.
+- GitHub: cài app Claude cho repo (https://github.com/apps/claude) và thêm secret `CLAUDE_CODE_OAUTH_TOKEN` (gói Pro/Max, lấy bằng `claude setup-token`) hoặc `ANTHROPIC_API_KEY` trong Settings → Secrets and variables → Actions.
+- Xử lý lại một PR: tab Actions → "Xu ly san pham moi (inbox)" → Run workflow, nhập số PR.
+
+Sản phẩm chỉ có trên web nằm trong `data/manual.json` (ảnh gốc ở `assets/img-src/products/`), hiện ở đầu trang sản phẩm, không có link Instagram.
 
 ## Deploy GitHub Pages
 - Repo phải tên đúng `gemsland.github.io` (thuộc org `gemsland`).
