@@ -32,7 +32,9 @@ const TEXT = {
     ok: (n, p) => `Đã gửi ${n} góp ý từ ${p} trang. Cảm ơn bạn!`,
     fail: "Gửi chưa được, góp ý vẫn được giữ lại. Thử lại sau nhé.",
     noChannel: "Chưa cấu hình nơi nhận góp ý (email/Telegram).",
-    needCode: "Lần này góp ý chỉ gửi qua Telegram. Để lần sau góp ý vào GitHub và Claude tự sửa, hãy gửi một sản phẩm qua form “Thêm sản phẩm” (mã bí mật sẽ được nhớ).",
+    needCode: "Góp ý chỉ được gửi qua Telegram (thiếu hoặc sai mã bí mật), nên chưa vào GitHub để Claude tự sửa. Lần gửi sau sẽ hỏi lại mã.",
+    codeTitle: "Nhập mã bí mật", codeSub: "Có mã thì góp ý được ghi vào GitHub và Claude tự sửa web. Mã được nhớ trên trình duyệt này.",
+    codeSave: "Lưu và gửi", codeSkip: "Chỉ gửi Telegram",
   },
   en: {
     on: "Feedback mode: click the icon at the bottom right to pick what to change. To switch pages, close the toolbar, navigate, then open it again. Notes from every page are sent together.",
@@ -40,7 +42,9 @@ const TEXT = {
     ok: (n, p) => `Sent ${n} notes from ${p} pages. Thank you!`,
     fail: "Couldn't send. Your notes are kept, please try again.",
     noChannel: "No feedback destination (email/Telegram) is configured.",
-    needCode: "This time it went to Telegram only. To send future feedback to GitHub for Claude to fix, submit one product via “Add product” (the secret code is then remembered).",
+    needCode: "Feedback went to Telegram only (missing or wrong secret code), so Claude won't fix it automatically. You'll be asked for the code next time.",
+    codeTitle: "Enter the secret code", codeSub: "With the code, feedback goes to GitHub and Claude fixes the site. It's remembered on this browser.",
+    codeSave: "Save and send", codeSkip: "Telegram only",
   },
 };
 const T = () => TEXT[lang()];
@@ -150,6 +154,30 @@ async function sendTelegram(subject, text) {
   issueSkipped = j.issue_skipped || null;
 }
 let lastIssue = null, issueSkipped = null;
+
+// hop thoai nho hoi ma bi mat; resolve sau khi nguoi dung luu hoac bo qua
+function askCode() {
+  return new Promise((done) => {
+    const t = T(), wrap = document.createElement("div");
+    wrap.setAttribute("data-gh-up", ""); wrap.setAttribute("data-feedback-toolbar", ""); wrap.setAttribute("data-persist", "");
+    wrap.innerHTML = `<form class="gu-card" role="dialog" aria-modal="true" aria-labelledby="gu-code-t" style="width:min(420px,100%)">
+      <div class="gu-head"><div><h2 id="gu-code-t">${t.codeTitle}</h2><p>${t.codeSub}</p></div></div>
+      <div class="gu-body"><span class="gu-pw"><input class="gu-input" name="code" type="password" autocomplete="off" required></span></div>
+      <div class="gu-foot"><button type="button" class="gu-btn gu-ghost" data-skip>${t.codeSkip}</button>
+        <button class="gu-btn gu-primary">${t.codeSave}</button></div></form>`;
+    document.body.appendChild(wrap);
+    const form = wrap.querySelector("form"), input = form.elements.code;
+    const finish = () => { wrap.remove(); done(); };
+    form.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      if (input.value.trim()) { try { localStorage.setItem("gh-upload-code", input.value.trim()); } catch (e) {} }
+      finish();
+    });
+    wrap.querySelector("[data-skip]").addEventListener("click", finish);
+    wrap.addEventListener("keydown", (ev) => { if (ev.key === "Escape") { ev.stopPropagation(); finish(); } });
+    setTimeout(() => input.focus(), 50);
+  });
+}
 const savedCode = () => { try { return localStorage.getItem("gh-upload-code") || ""; } catch (e) { return ""; } };
 
 async function onSubmit(_output, current) {
@@ -164,12 +192,17 @@ async function onSubmit(_output, current) {
   const n = [...all.values()].reduce((s, l) => s + l.length, 0);
   if (!n) return;
   const subject = `[Gemsland] ${n} góp ý · ${all.size} trang`;
+  // chua co ma bi mat tren trinh duyet nay -> hoi luon (bo qua = chi gui Telegram)
+  if (CONFIG.telegramRelay && !savedCode()) await askCode();
   const res = await Promise.allSettled(senders.map((send) => send(subject, format(all))));
   res.filter((r) => r.status === "rejected").forEach((r) => console.error("[feedback]", r.reason));
   if (res.every((r) => r.status === "rejected")) { toast(T().fail, 8000, "alert"); throw new Error("all feedback channels failed"); }
 
   toast(T().ok(n, all.size) + (lastIssue ? ` (GitHub issue #${lastIssue.number})` : ""));
-  if (issueSkipped === "no_code") setTimeout(() => toast(T().needCode, 9000, "alert"), 600);
+  if (issueSkipped === "no_code") {
+    if (savedCode()) { try { localStorage.removeItem("gh-upload-code"); } catch (e) {} }
+    setTimeout(() => toast(T().needCode, 9000, "alert"), 600);
+  }
   // gui xong: xoa ghi chu moi trang; trang hien tai nap lai Agentation sau khi no hien dau "da gui"
   for (const path of all.keys()) localStorage.removeItem(STORE + path);
   setTimeout(() => { localStorage.removeItem(STORE + location.pathname); remount(false); }, 1600);
