@@ -57,12 +57,12 @@ Mở `https://gemsland.github.io/?feedback` trên **máy tính** để bật [Ag
 Nội dung gửi gồm ghi chú, selector của phần tử, trang, kích thước màn hình. Nơi nhận cấu hình trong `CONFIG` ở `assets/js/feedback.js`:
 - **Email**: lấy access key ở https://web3forms.com rồi điền `web3formsKey`.
 - **Telegram**: deploy Cloudflare Worker trong `scripts/feedback-relay/` (hướng dẫn ở đầu `worker.js`), điền URL worker vào `telegramRelay`. Bot token chỉ nằm trong secret của worker.
-- **GitHub issue → Claude tự sửa**: nếu worker có `GITHUB_TOKEN` (quyền *Issues: Read and write*) và lần gửi kèm đúng mã bí mật (trình duyệt đã nhớ mã sau khi gửi sản phẩm qua form), góp ý được thêm thành comment vào issue đang mở mới nhất có nhãn `feedback` (chưa có thì worker tự mở). Workflow `.github/workflows/claude-feedback.yml` cho Claude đọc comment đó, sửa nguồn, build, test rồi **đẩy thẳng lên `main`** và trả lời trên issue (mục "Xử lý góp ý" trong `CLAUDE.md`). Không kèm mã thì góp ý chỉ đi Telegram. Link issue được gửi kèm trong tin Telegram.
+- **GitHub issue → Claude tự sửa**: nếu worker có `GITHUB_TOKEN` (quyền *Issues: Read and write*) và lần gửi kèm đúng mã bí mật (trình duyệt đã nhớ mã sau khi gửi sản phẩm qua form), góp ý được thêm thành comment vào issue đang mở mới nhất có nhãn `feedback` (chưa có thì worker tự mở). Workflow `.github/workflows/claude-feedback.yml` cho Claude đọc comment đó, sửa nguồn, build, test rồi **đẩy thẳng lên `main`**, trả lời trên issue và **đóng issue** (mục "Xử lý góp ý" trong `CLAUDE.md`); lần góp ý sau worker mở issue mới. Issue còn mở nghĩa là Claude chưa xử lý được, xem comment lý do. Không kèm mã thì góp ý chỉ đi Telegram. Link issue được gửi kèm trong tin Telegram.
 
 `assets/js/vendor/agentation.mjs` là bản đóng gói sẵn Agentation + React. Cập nhật: `cd scripts/feedback && npm install && npm run build`.
 
 ### Thêm sản phẩm mới từ web
-Ở chế độ `?feedback` có nút **＋ Thêm sản phẩm** (góc trái dưới, dùng được cả trên điện thoại): chọn ảnh, điền tên, loại đá, loại món, trạng thái, mô tả và **mã bí mật**. Luồng:
+Ở chế độ `?feedback` có nút **＋ Thêm sản phẩm** (góc trái dưới, dùng được cả trên điện thoại): chọn ảnh, điền tên, loại đá, loại món (có thể gõ **loại mới**, Claude sẽ gộp vào loại có sẵn nếu trùng nghĩa hoặc thêm loại mới vào web), trạng thái, mô tả và **mã bí mật**. Luồng:
 1. Trình duyệt nén ảnh rồi gửi tới worker (`scripts/feedback-relay/worker.js`, đường dẫn `/upload`).
 2. Worker kiểm tra mã, tạo nhánh `inbox/<ngày-giờ>-<tên>` chứa `photo.jpg` + `info.json`, mở Pull Request và báo Telegram.
 3. GitHub Action `.github/workflows/claude-inbox.yml` chạy Claude theo mục "Xử lý inbox" trong `CLAUDE.md`: đưa ảnh vào `assets/img-src/products/`, thêm vào `data/manual.json` + bản tiếng Anh, build, test, rồi **đẩy thẳng lên `main`** (chỉ khi mọi kiểm tra qua), comment tóm tắt và đóng PR.

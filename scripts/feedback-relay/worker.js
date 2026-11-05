@@ -146,10 +146,13 @@ async function upload(req, env, json) {
   if (!sameText(String(body.code || ""), env.UPLOAD_CODE)) return json(401, { error: "bad_code" });
 
   const p = body.product || {};
+  // loai mon: mot trong TYPES, hoac ten loai moi do nguoi dung go (Claude gop/them khi xu ly PR)
+  const rawType = String(p.type || "").replace(/[<>\u0000-\u001f]/g, "").trim().slice(0, 30);
   const info = {
     name: String(p.name || "").trim().slice(0, 120),
     stone: String(p.stone || "").trim().slice(0, 60),
-    type: TYPES.includes(p.type) ? p.type : "Trang sức",
+    type: rawType || "Trang sức",
+    type_new: !!rawType && !TYPES.includes(rawType),
     status: STATUS.includes(p.status) ? p.status : "available",
     desc: String(p.desc || "").trim().slice(0, 1500),
     note: String(p.note || "").trim().slice(0, 1000),
@@ -190,7 +193,7 @@ async function upload(req, env, json) {
         "",
         `- **Tên:** ${info.name}`,
         `- **Loại đá:** ${info.stone || "(chưa ghi)"}`,
-        `- **Loại món:** ${info.type}`,
+        `- **Loại món:** ${info.type}${info.type_new ? " (loại mới)" : ""}`,
         `- **Trạng thái:** ${info.status === "sold" ? "đã bán" : "còn hàng"}`,
         info.desc ? `- **Mô tả:** ${info.desc}` : "",
         info.note ? `- **Ghi chú:** ${info.note}` : "",

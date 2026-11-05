@@ -242,6 +242,7 @@ const UP = {
     note: "Ghi chú cho người duyệt", notePh: "Không bắt buộc", optional: "không bắt buộc", code: "Mã bí mật", saved: "đã lưu",
     show: "Hiện", hide: "Ẩn", send: "Gửi sản phẩm", cancel: "Huỷ", close: "Đóng",
     types: { "Vòng cổ": "Vòng cổ", "Vòng tay": "Vòng tay", "Nhẫn": "Nhẫn", "Bông tai": "Bông tai", "Mặt dây": "Mặt dây", "Đá thô": "Đá thô", "Trang sức": "Khác" },
+    newType: "＋ Loại mới", newTypePh: "Tên loại mới, VD: Lắc chân", needType: "Nhập tên loại mới.",
     sending: "Đang gửi…", reading: "Đang xử lý ảnh…", ok: (n) => `Đã gửi! Sản phẩm đang chờ duyệt (PR #${n}), lên web sau khi được duyệt.`,
     badCode: "Sai mã bí mật.", fail: "Gửi chưa được, thử lại sau nhé.", needPhoto: "Chọn một ảnh trước đã.", needName: "Nhập tên món.",
     net: (o) => `Không gửi tới được máy chủ. Nếu đang chạy thử trên máy, địa chỉ ${o} có thể chưa được phép (chỉ cho phép http://localhost:8000 và trang thật).`,
@@ -257,6 +258,7 @@ const UP = {
     note: "Note for the reviewer", notePh: "Optional", optional: "optional", code: "Secret code", saved: "saved",
     show: "Show", hide: "Hide", send: "Send product", cancel: "Cancel", close: "Close",
     types: { "Vòng cổ": "Necklace", "Vòng tay": "Bracelet", "Nhẫn": "Ring", "Bông tai": "Earrings", "Mặt dây": "Pendant", "Đá thô": "Raw stone", "Trang sức": "Other" },
+    newType: "＋ New type", newTypePh: "New type name, e.g. Anklet", needType: "Enter the new type name.",
     sending: "Sending…", reading: "Processing photo…", ok: (n) => `Sent! The product is waiting for review (PR #${n}).`,
     badCode: "Wrong secret code.", fail: "Couldn't send, please try again.", needPhoto: "Pick a photo first.", needName: "Enter a name.",
     net: (o) => `Couldn't reach the server. When testing locally, ${o} may not be allowed (only http://localhost:8000 and the live site are).`,
@@ -330,6 +332,8 @@ upCss.textContent = `
   color:var(--c-ink);background:var(--c-field);box-shadow:inset 0 0 0 1px var(--c-line);transition:background .15s,box-shadow .15s,color .15s}
 [data-gh-up] .gu-chip:hover{box-shadow:inset 0 0 0 1px var(--c-line2)}
 [data-gh-up] .gu-chip[aria-pressed=true],[data-gh-up] .gu-chip[aria-checked=true]{color:#061021;background:var(--c-aqua);box-shadow:none}
+[data-gh-up] .gu-chip.gu-new{color:var(--c-aqua);background:none;box-shadow:inset 0 0 0 1px rgba(127,214,226,.4);border:0}
+[data-gh-up] .gu-chip.gu-new[aria-checked=true]{color:#061021;background:var(--c-aqua)}
 [data-gh-up] .gu-chips.sm .gu-chip{padding:7px 11px;font-size:12px;color:var(--c-muted)}
 [data-gh-up] .gu-chips.sm .gu-chip[aria-pressed=true]{color:#061021}
 [data-gh-up] .gu-seg{display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:14px;background:var(--c-field);box-shadow:inset 0 0 0 1px var(--c-line)}
@@ -391,7 +395,9 @@ function openUpload() {
       <div class="gu-field"><span class="gu-label">${u.type}</span>
         <div class="gu-chips" role="radiogroup" aria-label="${u.type}" data-group="type">
           ${Object.entries(u.types).map(([v, t]) => `<button type="button" class="gu-chip" role="radio" data-v="${e(v)}" aria-checked="${v === state.type}">${e(t)}</button>`).join("")}
-        </div></div>
+          <button type="button" class="gu-chip gu-new" role="radio" data-v="__new__" aria-checked="false">${u.newType}</button>
+        </div>
+        <input class="gu-input" name="newtype" maxlength="30" placeholder="${e(u.newTypePh)}" autocomplete="off" hidden></div>
       <div class="gu-field"><span class="gu-label">${ICON.gem} ${u.stone} <small>${u.optional}</small></span>
         <input class="gu-input" name="stone" maxlength="60" placeholder="${e(u.stonePh)}" autocomplete="off">
         <div class="gu-chips sm" data-group="stone">${STONES.slice(0, 10).map((s) => `<button type="button" class="gu-chip" data-v="${e(s)}" aria-pressed="false">${e(s)}</button>`).join("")}</div>
@@ -450,6 +456,7 @@ function openUpload() {
     const g = b.parentElement, key = g.dataset.group;
     g.querySelectorAll("[role=radio]").forEach((x) => x.setAttribute("aria-checked", x === b));
     state[key] = b.dataset.v;
+    if (key === "type") { f.newtype.hidden = b.dataset.v !== "__new__"; if (!f.newtype.hidden) f.newtype.focus(); }
   }));
   const stoneChips = [...wrap.querySelectorAll('[data-group="stone"] .gu-chip')];
   const syncStone = () => stoneChips.forEach((c) => c.setAttribute("aria-pressed", c.dataset.v.toLowerCase() === f.stone.value.trim().toLowerCase()));
@@ -465,13 +472,16 @@ function openUpload() {
     ev.preventDefault(); showErr("");
     if (!state.photo) { showErr(u.needPhoto); drop.focus(); return; }
     if (!f.name.value.trim()) { showErr(u.needName); f.name.focus(); return; }
+    // loai moi: gui ten tu go; Claude se gop vao loai co san neu trung nghia, khong thi them loai moi vao web
+    const type = state.type === "__new__" ? f.newtype.value.trim() : state.type;
+    if (!type) { showErr(u.needType); f.newtype.focus(); return; }
     send.disabled = true; send.innerHTML = `<span class="gu-spin"></span>${u.sending}`;
     try {
       const r = await fetch(CONFIG.telegramRelay.replace(/\/$/, "") + "/upload", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           code: f.code.value,
-          product: { name: f.name.value, stone: f.stone.value, type: state.type, status: state.status, desc: f.desc.value, note: f.note.value },
+          product: { name: f.name.value, stone: f.stone.value, type, status: state.status, desc: f.desc.value, note: f.note.value },
           image: { data: state.photo },
         }),
       });
