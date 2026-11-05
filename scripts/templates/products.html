@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{t:shop.title}}</title>
+<title>{{TITLE}}</title>
 <meta name="description" content="{{DESCRIPTION}}">
 <link rel="canonical" href="{{CANONICAL}}">
 {{ALTERNATES}}
@@ -12,8 +12,8 @@
 <meta property="og:locale" content="{{t:meta.og_locale}}">
 <meta property="og:locale:alternate" content="{{t:meta.og_locale_alt}}">
 <meta property="og:site_name" content="Gemsland">
-<meta property="og:title" content="{{a:shop.og_title}}">
-<meta property="og:description" content="{{a:shop.og_description}}">
+<meta property="og:title" content="{{OG_TITLE}}">
+<meta property="og:description" content="{{OG_DESCRIPTION}}">
 <meta property="og:url" content="{{CANONICAL}}">
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -33,14 +33,14 @@
 <link rel="stylesheet" href="{{ROOT}}assets/css/products.css">
 <script type="application/ld+json">{{JSONLD}}</script>
 </head>
-<body class="no-js shop-page" data-page="shop">
+<body class="no-js shop-page" data-page="shop"{{BODY_ATTR}}>
 <div class="cursor-light" aria-hidden="true" data-persist></div>
 
 <header class="nav">
   <a class="brand" href="{{HOME}}"><img src="{{ROOT}}assets/img/logo-gemsland.webp" alt="" width="38" height="38">GEMSLAND</a>
   <ul id="nav-menu">
     <li><a href="{{HOME}}">{{t:nav.home}}</a></li>
-    <li><a href="./" aria-current="page">{{t:nav.products}}</a></li>
+    <li><a href="{{PRODUCTS}}" aria-current="page">{{t:nav.products}}</a></li>
     <li><a href="{{HOME}}#chon-da">{{t:nav.picker}}</a></li>
     <li><a href="{{HOME}}#tiem">{{t:nav.about}}</a></li>
   </ul>
@@ -49,8 +49,8 @@
 
 <main>
   <section class="shop-hero">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{HOME}}">{{t:nav.home}}</a><span aria-hidden="true">/</span><span aria-current="page">{{t:nav.products}}</span></nav>
-    <h1 class="rv">{{t:shop.h1}}</h1>
+    <nav class="crumbs" aria-label="Breadcrumb">{{CRUMBS}}</nav>
+    <h1 class="rv">{{H1}}</h1>
     <p class="lede rv" style="--d:1">{{LEDE}}</p>
   </section>
 
@@ -65,7 +65,6 @@
       </label>
     </div>
     <div class="fchips" role="group" aria-label="{{a:shop.stone_label}}">
-      <button type="button" class="fchip" data-f-stone="" aria-pressed="true">{{t:shop.all_stones}} <span>{{COUNT}}</span></button>
       {{STONE_CHIPS}}
     </div>
     <p class="count" id="count" aria-live="polite">{{COUNT_TEXT}}</p>

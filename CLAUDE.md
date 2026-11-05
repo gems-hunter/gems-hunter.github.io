@@ -32,14 +32,15 @@ Với **mỗi** thư mục `inbox/<slug>/`:
 4. Thêm vào **đầu** danh sách `data/manual.json`:
    `{"id": "<id>", "name": "...", "stone": "...", "type": "...", "status": "...", "desc": "...", "image": "assets/img-src/products/<id>.jpg", "date": "<YYYY-MM-DD từ submitted_at>"}`
    (JSON thụt lề 1 dấu cách, `ensure_ascii=False`, giữ nguyên các mục cũ).
-5. Thêm bản tiếng Anh vào `data/products.en.json`: `"<id>": {"name": "...", "desc": "..."}`: tên tiếng Anh tự nhiên kiểu các mục sẵn có (vd. "Blue-flash Moonstone Bracelet"), mô tả dịch sát nghĩa; mô tả trống thì `"desc": ""`.
-6. Xoá thư mục `inbox/<slug>/`.
+5. Trang riêng theo loại đá (`/san-pham/<loai-da>/`) tự sinh khi một loại đá có từ 3 sản phẩm. Nếu build in `! thieu doan gioi thieu cho loai da '...'`, thêm mục cho loại đá đó vào `data/stones.json` (`{"vi": ..., "en": ...}`, 2–3 câu: khoáng vật gì, màu sắc, độ cứng/cách giữ gìn, đá tháng nào nếu đúng; **không** viết công dụng chữa bệnh hay phong thuỷ, không bịa thông tin).
+6. Thêm bản tiếng Anh vào `data/products.en.json`: `"<id>": {"name": "...", "desc": "..."}`: tên tiếng Anh tự nhiên kiểu các mục sẵn có (vd. "Blue-flash Moonstone Bracelet"), mô tả dịch sát nghĩa; mô tả trống thì `"desc": ""`.
+7. Xoá thư mục `inbox/<slug>/`.
 
 Sau khi xử lý hết:
 
-7. Chạy build, `check_site.py` và test (xem "Đẩy lên main" bên dưới).
-8. `git fetch origin main && git reset --soft origin/main` (gộp luôn commit `inbox/` của worker để ảnh thô không nằm trong lịch sử `main`), rồi commit **một** commit `inbox: them <tên sản phẩm>` (nhiều món thì `inbox: them N san pham`) và đẩy thẳng lên `main` theo "Đẩy lên main".
-9. Comment lên PR (tiếng Việt): tên, loại đá, loại món, trạng thái, tên tiếng Anh đã đặt, chỗ nào đã chuẩn hoá khác với người nhập, link commit trên `main`. Rồi đóng PR: `gh pr close <số> --delete-branch`.
+8. Chạy build, `check_site.py` và test (xem "Đẩy lên main" bên dưới).
+9. `git fetch origin main && git reset --soft origin/main` (gộp luôn commit `inbox/` của worker để ảnh thô không nằm trong lịch sử `main`), rồi commit **một** commit `inbox: them <tên sản phẩm>` (nhiều món thì `inbox: them N san pham`) và đẩy thẳng lên `main` theo "Đẩy lên main".
+10. Comment lên PR (tiếng Việt): tên, loại đá, loại món, trạng thái, tên tiếng Anh đã đặt, chỗ nào đã chuẩn hoá khác với người nhập, link commit trên `main`. Rồi đóng PR: `gh pr close <số> --delete-branch`.
 
 Nếu `inbox/` trống hoặc không có `info.json`/ảnh hợp lệ: không commit gì, chỉ comment lý do lên PR (để PR mở).
 

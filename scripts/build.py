@@ -78,8 +78,12 @@ def common_extra(lang, page, root):
              "ALTERNATES": alternates(page), "LANG_SWITCH": lang_switch(page, lang, root)}
     other = next(l for l in LANGS if l != lang)
     extra["OTHER_LANG"], extra["OTHER_PAGE"] = other, link(root, LANGS[other][page])
+    S = strings(lang)
+    extra["STONE_LINKS"] = "".join(
+        f'<li><a href="{link(root, v[lang])}">{html.escape(label(S, "stones", st))}</a></li>'
+        for st, v in list(stone_pages().items())[:8])
     footer = (TPL / "footer.html").read_text(encoding="utf8")
-    extra["FOOTER"] = i18n.render(footer, strings(lang), root, extra)
+    extra["FOOTER"] = i18n.render(footer, S, root, extra)
     return extra
 
 
@@ -274,19 +278,55 @@ def manual_items():
     return sorted(out, key=lambda q: q.get("date", ""), reverse=True)
 
 
+_ITEMS = []
+
+
 def product_items():
+    if _ITEMS:
+        return _ITEMS
     data = json.loads((ROOT / "data" / "products.json").read_text(encoding="utf8"))
     items = manual_items() + [p for p in data if p.get("is_product")]
     for p in items:
         src = ROOT / p["image"]
         save_webp(src, PIMG / f'{p["id"]}-480.webp', 600, 78)
         save_webp(src, PIMG / f'{p["id"]}-960.webp', 1200, 80)
+    _ITEMS.extend(items)
     return items
 
 
+STONE_MIN = 3  # loai da co tu 3 san pham tro len thi co trang rieng /san-pham/<loai-da>/
+_STONES = {}
+
+
+def stone_pages():
+    """{ten loai da tieng Viet: {"key", "count", "vi": duong dan, "en": duong dan}}, nhieu san pham nhat truoc.
+    Dang ky luon vao LANGS (khoa trang "stone:<key>") de canonical, hreflang, nut VI/EN, sitemap dung chung."""
+    if _STONES:
+        return _STONES
+    Svi, Sen = strings("vi"), strings("en")
+    counts = {}
+    for p in product_items():
+        if p.get("stone"):
+            counts[p["stone"]] = counts.get(p["stone"], 0) + 1
+    for st, n in sorted(counts.items(), key=lambda x: (-x[1], x[0])):
+        k = key_of(st)
+        if n < STONE_MIN or st == OTHER_STONE or f"stones.{k}" not in Svi:
+            continue
+        paths = {"vi": f'{LANGS["vi"]["products"]}{k}/', "en": f'{LANGS["en"]["products"]}{key_of(Sen[f"stones.{k}"])}/'}
+        _STONES[st] = {"key": k, "count": n, **paths}
+        for l in LANGS:
+            LANGS[l][f"stone:{k}"] = paths[l]
+    return _STONES
+
+
+def load_stone_intros():
+    f = ROOT / "data" / "stones.json"
+    return json.loads(f.read_text(encoding="utf8")) if f.exists() else {}
+
+
 def build_products(lang):
-    S, path = strings(lang), LANGS[lang]["products"]
-    root = root_for(path)
+    """Trang tat ca san pham + mot trang rieng cho moi loai da du san pham."""
+    S = strings(lang)
     en_data = load_en()
     items = [localize(p, lang, en_data, S) for p in product_items()]
     missing = sum(1 for p in items if p.get("_missing_en"))
@@ -295,30 +335,83 @@ def build_products(lang):
     no_desc = sum(1 for p in items if p.get("_missing_en_desc"))
     if no_desc:
         print(f"  ! thieu mo ta EN (co ten, chua co desc): {no_desc} san pham")
+    pages = stone_pages()
+    n = build_listing(lang, "products", items, items, None)
+    intros = load_stone_intros()
+    for st, info in pages.items():
+        sub = [p for p in items if p.get("stone") == st]
+        build_listing(lang, f'stone:{info["key"]}', items, sub, (st, intros.get(st, {}).get(lang)))
+    print(f"  {LANGS[lang]['products']}: {n} san pham, {len(pages)} trang loai da")
+    return n
+
+
+def build_listing(lang, page, all_items, items, stone):
+    """Mot trang danh sach san pham. stone = None (tat ca) hoac (ten loai da tieng Viet, doan gioi thieu)."""
+    S, path = strings(lang), LANGS[lang][page]
+    root = root_for(path)
     e = html.escape
-    types, stones = {}, {}
+    pages = stone_pages()
+    stone_counts, types = {}, {}
+    for p in all_items:
+        stone_counts[p["stone_label"]] = stone_counts.get(p["stone_label"], 0) + 1
     for p in items:
         types[p["type_label"]] = types.get(p["type_label"], 0) + 1
-        stones[p["stone_label"]] = stones.get(p["stone_label"], 0) + 1
     other = label(S, "stones", OTHER_STONE)
-    order = sorted((k for k in stones if k != other), key=lambda k: (-stones[k], k)) + ([other] if other in stones else [])
-    chips = "".join(f'<button type="button" class="fchip" data-f-stone="{e(st)}" aria-pressed="false">{e(st)} <span>{stones[st]}</span></button>' for st in order)
+    order = sorted((k for k in stone_counts if k != other), key=lambda k: (-stone_counts[k], k)) + ([other] if other in stone_counts else [])
+    page_of = {label(S, "stones", st): v[lang] for st, v in pages.items()}  # nhan dang hien thi -> duong dan
+    cur = label(S, "stones", stone[0]) if stone else ""
+    # chip loai da: loai co trang rieng la link that (Google lan theo duoc); trang tat ca thi JS loc tai cho
+    def chip(lbl, count, href):
+        pressed = "true" if lbl == cur else "false"
+        inner = f'{e(lbl) if lbl else e(S["shop.all_stones"])} <span>{count}</span>'
+        if href:
+            return f'<a class="fchip" href="{e(link(root, href))}" data-f-stone="{e(lbl)}" aria-pressed="{pressed}">{inner}</a>'
+        return f'<button type="button" class="fchip" data-f-stone="{e(lbl)}" aria-pressed="{pressed}">{inner}</button>'
+    chips = chip("", len(all_items), LANGS[lang]["products"] if stone else None).replace(
+        'aria-pressed="false"', f'aria-pressed="{"false" if stone else "true"}"', 1)
+    # tren trang loai da: loai chua co trang rieng thi link ve trang tat ca, loc san bang ?da=
+    alt = (lambda st: f'{LANGS[lang]["products"]}?da={quote(st)}') if stone else (lambda st: None)
+    chips += "".join(chip(st, stone_counts[st], page_of.get(st) or alt(st)) for st in order)
     type_labels = [label(S, "types", x) for x in TYPE_ORDER]
     type_opts = "".join(f'<option value="{e(t)}">{e(t)} ({types[t]})</option>' for t in type_labels if t in types)
-    n, ns = len(items), len([k for k in stones if k != other])
+    n = len(items)
     url = f"{SITE_URL}{path}"
-    ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": S["shop.og_title"],
-          "url": url, "inLanguage": S["meta.lang"],
+    home, prods = SITE_URL + LANGS[lang]["home"], SITE_URL + LANGS[lang]["products"]
+    crumbs = [(S["nav.home"], home), (S["nav.products"], prods)]
+    if stone:
+        crumbs.append((cur, url))
+        types_txt = ", ".join(t.lower() for t in sorted(types, key=lambda t: -types[t])[:3])
+        fmt = lambda k: S[k].replace("{stone}", cur).replace("{n}", str(n)).replace("{types}", types_txt)
+        title, og_title, h1 = fmt("shop.stone_title"), fmt("shop.stone_og"), fmt("shop.stone_h1")
+        desc = fmt("shop.stone_desc")
+        intro = stone[1] or fmt("shop.stone_fallback")
+        if not stone[1]:
+            print(f"  ! thieu doan gioi thieu cho loai da '{stone[0]}' trong data/stones.json")
+        lede = f"{e(intro)} {e(fmt('shop.stone_count'))}"
+        body_attr = f' data-stone="{e(cur)}"'
+    else:
+        ns = len([k for k in stone_counts if k != other])
+        title, og_title, h1 = S["shop.title"], S["shop.og_title"], S["shop.h1"]
+        desc = S["shop.description"].replace("{n}", str(n))
+        lede = S["shop.lede"].replace("{n}", str(n)).replace("{s}", str(ns))
+        body_attr = ""
+    crumb_html = "".join(
+        f'<a href="{e(link(root, LANGS[lang]["home"] if i == 0 else LANGS[lang]["products"]))}">{e(name)}</a><span aria-hidden="true">/</span>'
+        if i < len(crumbs) - 1 else f'<span aria-current="page">{e(name)}</span>'
+        for i, (name, _) in enumerate(crumbs))
+    ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": og_title,
+          "url": url, "inLanguage": S["meta.lang"], "description": desc,
           "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": [
-              {"@type": "ListItem", "position": 1, "name": S["nav.home"], "item": SITE_URL + LANGS[lang]["home"]},
-              {"@type": "ListItem", "position": 2, "name": S["nav.products"], "item": url}]},
+              {"@type": "ListItem", "position": i + 1, "name": name, "item": href} for i, (name, href) in enumerate(crumbs)]},
           "mainEntity": {"@type": "ItemList", "numberOfItems": n, "itemListElement": [
               {"@type": "ListItem", "position": i + 1, "url": f'{url}#sp-{p["id"]}', "name": p["name"],
                "image": f'{SITE_URL}/assets/img/products/{p["id"]}-960.webp'} for i, p in enumerate(items)]}}
-    extra = common_extra(lang, "products", root)
+    if stone:
+        ld["about"] = {"@type": "Thing", "name": cur}
+    extra = common_extra(lang, page, root)
     extra.update({
-        "DESCRIPTION": e(S["shop.description"].replace("{n}", str(n))),
-        "LEDE": S["shop.lede"].replace("{n}", str(n)).replace("{s}", str(ns)),
+        "TITLE": e(title), "OG_TITLE": e(og_title), "OG_DESCRIPTION": e(S["shop.og_description"] if not stone else desc),
+        "DESCRIPTION": e(desc), "H1": h1, "LEDE": lede, "CRUMBS": crumb_html, "BODY_ATTR": body_attr,
         "COUNT": str(n), "COUNT_TEXT": e(S["js.count_one"] if n == 1 else S["js.count"].replace("{n}", str(n))),
         "STONE_CHIPS": chips, "TYPE_OPTIONS": type_opts,
         "CARDS": "\n".join(card(p, i, lang, S, root) for i, p in enumerate(items)),
@@ -326,7 +419,6 @@ def build_products(lang):
     })
     tpl = (TPL / "products.html").read_text(encoding="utf8")
     write_page(path, i18n.render(tpl, S, root, extra))
-    print(f"  {path}: {n} san pham, {len(stones)} loai da")
     return n
 
 
@@ -338,7 +430,7 @@ def page_images(page):
         name = src.split("assets/img/", 1)[-1] if "assets/img/" in src else None
         if not name or name.startswith("logo-"):
             continue
-        if page == "products":
+        if page != "home":
             name = name.replace("-480.webp", "-960.webp")
         url = f"{SITE_URL}/assets/img/{name}"
         if url not in seen:
@@ -375,7 +467,8 @@ def build_seo_files():
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"'
            ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">']
-    for page in ("home", "products"):
+    stone_pages()
+    for page in list(LANGS["vi"]):
         imgs = page_images(page)
         for lang in LANGS:
             xml.append(f"  <url><loc>{SITE_URL}{LANGS[lang][page]}</loc><lastmod>{today}</lastmod>")

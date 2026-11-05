@@ -10,14 +10,16 @@ export default function initShop(signal) {
   // loc san pham
   const items = $$('.item'), PAGE = 24;
   let shown = PAGE;
-  const state = { type: '', stone: '', q: '' };
+  // trang rieng cua mot loai da (/san-pham/<loai-da>/): danh sach chi co loai do, chip loai da la link sang trang khac
+  const stonePage = document.body.dataset.stone || '';
+  const state = { type: '', stone: stonePage, q: '' };
   const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd');
   const countEl = $('#count'), more = $('#more'), empty = $('#empty');
 
   // doc bo loc tu URL (?loai=...&da=...) de chia se duoc link
   const qs = new URLSearchParams(location.search);
   if (qs.get('loai')) state.type = qs.get('loai');
-  if (qs.get('da')) state.stone = qs.get('da');
+  if (qs.get('da') && !stonePage) state.stone = qs.get('da');
   if (qs.get('q')) state.q = qs.get('q');
 
   const sync = () => {
@@ -38,10 +40,14 @@ export default function initShop(signal) {
     countEl.textContent = n === 1 ? I18N.count_one : I18N.count.replace('{n}', n);
     more.hidden = n <= shown; empty.hidden = n > 0;
     const p = new URLSearchParams();
-    if (state.type) p.set('loai', state.type); if (state.stone) p.set('da', state.stone); if (state.q) p.set('q', state.q);
+    if (state.type) p.set('loai', state.type); if (state.stone && !stonePage) p.set('da', state.stone); if (state.q) p.set('q', state.q);
     setURL(location.pathname + withFeedback(p.toString() ? '?' + p : '') + location.hash);
   };
-  $$('[data-f-stone]').forEach((b) => b.addEventListener('click', () => { state.stone = b.dataset.fStone; sync(); apply(true); }));
+  // trang tat ca: loc tai cho (chip co href van de Google lan theo); trang loai da: de link chuyen trang
+  $$('[data-f-stone]').forEach((b) => b.addEventListener('click', (ev) => {
+    if (stonePage) return;
+    ev.preventDefault(); state.stone = b.dataset.fStone; sync(); apply(true);
+  }));
   $('#type').addEventListener('change', (e) => { state.type = e.target.value; apply(true); });
   let t; $('#q').addEventListener('input', (e) => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value; apply(true); }, 160); });
   more.addEventListener('click', () => { shown += PAGE; apply(false); });

@@ -241,7 +241,7 @@ em{font-style:italic;color:var(--aqua)}
 .cta .after{margin-top:22px;color:var(--muted);font-size:15px}
 
 /* ---------- FOOTER ---------- */
-.foot{padding:70px var(--m) 36px;background:var(--night-2);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+.foot{padding:70px var(--m) 36px;background:var(--night-2);display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
 .foot .big{font:200 clamp(40px,5.4vw,88px)/1.05 var(--serif);letter-spacing:-.04em}
 .foot .big em{display:block}
 .foot .foot-tag{margin-top:14px;font:italic 300 clamp(17px,1.5vw,22px)/1.4 var(--serif);color:var(--muted)}

@@ -4,7 +4,8 @@
 // Neu co gi bat thuong (loi mang, trinh duyet cu...) thi de trinh duyet tai trang binh thuong.
 import { $$, reduce, withFeedback } from './common.js';
 
-const ROUTE = /^\/(?:en\/(?:products\/)?|san-pham\/)?$/; // /, /en/, /san-pham/, /en/products/
+// /, /en/, /san-pham/, /en/products/ va trang loai da /san-pham/<loai-da>/, /en/products/<stone>/
+const ROUTE = /^\/(?:en\/(?:products\/(?:[a-z0-9-]+\/)?)?|san-pham\/(?:[a-z0-9-]+\/)?)?$/;
 const PERSIST = '[data-persist], #agentation-root, [data-agentation-portal]';
 const keepHead = (el) => el.matches('meta[charset], meta[name=viewport], link[rel=stylesheet], link[rel=preconnect], link[href*="fonts.googleapis"], style, [data-persist]');
 // URL tuyet doi cua stylesheet, ghi lai luc tai: sau pushState, link.href tuong doi bi tinh lai theo URL moi
@@ -92,7 +93,10 @@ export function startRouter({ initialHTML, teardown, boot }) {
     const want = new Set([...doc.querySelectorAll('link[rel=stylesheet]')].map((l) => new URL(l.getAttribute('href'), u).href));
     // body: thay het, tru phan tu song suot (anh sang chuot, Agentation)
     const b = document.body, nb = doc.body;
-    b.className = nb.className; b.classList.remove('no-js'); b.dataset.page = nb.dataset.page || '';
+    // chep moi thuoc tinh cua body trang moi (class, data-page, data-stone...)
+    [...b.attributes].forEach((x) => b.removeAttribute(x.name));
+    [...nb.attributes].forEach((x) => b.setAttribute(x.name, x.value));
+    b.classList.remove('no-js');
     [...b.children].forEach((el) => { if (!el.matches(PERSIST)) el.remove(); });
     [...nb.children].forEach((el) => {
       if (el.matches(PERSIST) || (el.tagName === 'SCRIPT' && el.src)) return;

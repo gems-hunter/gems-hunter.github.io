@@ -45,6 +45,7 @@ Thêm chữ mới vào giao diện: thêm key vào **cả hai** file `i18n/vi.js
 Nếu hai file lệch key, build sẽ báo lỗi.
 
 ## SEO đã có
+- **Trang riêng cho từng loại đá** có từ 3 sản phẩm (`/san-pham/<loai-da>/`, `/en/products/<stone>/`): tiêu đề, mô tả, H1, breadcrumb, JSON-LD CollectionPage riêng; đoạn giới thiệu lấy từ `data/stones.json`. Chip loại đá ở trang sản phẩm là link thật tới các trang này (JS vẫn lọc tại chỗ); footer có mục "Loại đá". Ngưỡng ở `STONE_MIN` trong `scripts/build.py`.
 - Mỗi sản phẩm nằm sẵn trong HTML (không render bằng JS), có `alt`, ảnh webp lazy-load, `srcset`.
 - `<html lang>`, `<title>`, meta description, canonical, Open Graph (`og:locale` và `og:locale:alternate`), `hreflang` vi/en/x-default.
 - JSON-LD: JewelryStore ở trang chủ; CollectionPage + ItemList + Breadcrumb ở trang sản phẩm, có `inLanguage`.

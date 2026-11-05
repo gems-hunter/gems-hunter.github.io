@@ -5,6 +5,8 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ["index.html", "san-pham/index.html", "en/index.html", "en/products/index.html"]
+# + trang rieng tung loai da (/san-pham/<loai-da>/, /en/products/<stone>/)
+PAGES += sorted(str(f.relative_to(ROOT)).replace("\\", "/") for d in ("san-pham", "en/products") for f in (ROOT / d).glob("*/index.html"))
 VN_MARKS = {"\u0300", "\u0301", "\u0302", "\u0303", "\u0306", "\u0309", "\u0323", "\u031b"}
 LOANWORDS = re.compile(r"macram[eé]", re.I)
 
@@ -47,11 +49,11 @@ def check():
         bad_ig = set(re.findall(r"ig\.me/m/([\w.]+)", h)) - {"_gemsland_"}
         if bad_ig:
             errors.append(f"{rel}: ig.me tro toi {bad_ig}")
-    if len(html) == 4:
+    if all(r in html for r in ("san-pham/index.html", "en/products/index.html")):
         n = [len(re.findall(r'<li class="item"', html[r])) for r in ("san-pham/index.html", "en/products/index.html")]
         if n[0] != n[1]:
             errors.append(f"so san pham lech VI={n[0]} EN={n[1]}")
-        for rel in ("en/index.html", "en/products/index.html"):
+        for rel in [r for r in html if r.startswith("en/")]:
             body = re.sub(r'data-q="[^"]*"|<script.*?</script>|<footer.*?</footer>|<a [^>]*lang="vi"[^>]*>.*?</a>|Hà Nội|Nghệ An|Lục Yên|Yên Bái|Thanh Hóa', "", html[rel], flags=re.S)
             body = re.sub(r"<[^>]+>", " ", body)
             hits = sorted({w for w in body.split() if has_vietnamese(w)})

@@ -111,7 +111,8 @@
   "info": "Thông tin",
   "cities": "Hà Nội · TP.HCM",
   "pay": "Chuyển khoản · COD cọc 50%",
-  "natural": "100% đá tự nhiên"
+  "natural": "100% đá tự nhiên",
+  "stones": "Loại đá"
  },
  "js": {
   "hero": [
@@ -203,7 +204,14 @@
   "ask_similar": "Hỏi món tương tự",
   "sold": "Đã có chủ",
   "crumb_home": "Trang chủ",
-  "lb_lang": "Read in English"
+  "lb_lang": "Read in English",
+  "stone_title": "{stone} tự nhiên — trang sức bạc & đá thô | Gemsland",
+  "stone_og": "{stone} tự nhiên — Gemsland",
+  "stone_h1": "{stone} <em>tự nhiên</em>",
+  "stone_desc": "{n} món {stone} tự nhiên tại Gemsland: {types}. Mỗi món chỉ có một, nhắn Instagram để đặt.",
+  "stone_count": "Hiện có {n} món {stone} tại tiệm, mỗi món chỉ có một.",
+  "stone_fallback": "Các món trang sức bạc và đá thô {stone} tự nhiên của Gemsland.",
+  "stone_other": "Xem thêm loại đá khác"
  },
  "types": {
   "vong-co": "Vòng cổ",

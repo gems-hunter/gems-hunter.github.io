@@ -4,7 +4,7 @@
   "og_locale": "en_US",
   "og_locale_alt": "vi_VN",
   "title": "Gemsland — Handmade silver jewelry & natural raw stones",
-  "description": "Gemsland: handmade silver jewelry with natural stones like aquamarine, moonstone and opal, plus raw crystals. Every piece is one of a kind. Hanoi & Ho Chi Minh City.",
+  "description": "Gemsland: handmade silver jewelry with natural aquamarine, moonstone and opal, plus raw crystals. Each piece is one of a kind. Hanoi & Ho Chi Minh City.",
   "og_image_alt": "Raw aquamarine necklace in a macramé net by Gemsland",
   "og_title": "Gemsland — Some stones appear only once, and wait for just one person.",
   "og_description": "Handmade silver jewelry in aquamarine, moonstone and opal, plus raw crystals. Every stone is a story with no ending yet…",
@@ -111,7 +111,8 @@
   "info": "Info",
   "cities": "Hanoi · Ho Chi Minh City",
   "pay": "Bank transfer · COD with 50% deposit",
-  "natural": "100% natural stones"
+  "natural": "100% natural stones",
+  "stones": "Stones"
  },
  "js": {
   "hero": [
@@ -179,7 +180,7 @@
  },
  "shop": {
   "title": "Shop — Handmade silver jewelry & natural raw stones | Gemsland",
-  "description": "{n} handmade silver jewelry pieces and natural raw stones: aquamarine, moonstone, labradorite, opal, citrine, quartz… Each one is unique; message us on Instagram to order.",
+  "description": "{n} handmade silver jewelry pieces and raw stones: aquamarine, moonstone, labradorite, opal, citrine, quartz… Each is unique; order on Instagram.",
   "og_title": "Shop — Gemsland",
   "og_description": "Handmade silver jewelry and natural raw stones. Each piece is one of a kind.",
   "h1": "Silver jewelry &amp; <em>natural raw stones</em>",
@@ -203,7 +204,14 @@
   "ask_similar": "Ask for a similar piece",
   "sold": "Sold",
   "crumb_home": "Home",
-  "lb_lang": "Xem bằng tiếng Việt"
+  "lb_lang": "Xem bằng tiếng Việt",
+  "stone_title": "Natural {stone} — silver jewelry & raw stones | Gemsland",
+  "stone_og": "Natural {stone} — Gemsland",
+  "stone_h1": "Natural <em>{stone}</em>",
+  "stone_desc": "{n} natural {stone} pieces at Gemsland: {types}. Each is one of a kind; order on Instagram.",
+  "stone_count": "There are {n} {stone} pieces in the shop right now, each one of a kind.",
+  "stone_fallback": "Gemsland's natural {stone} silver jewelry and raw stones.",
+  "stone_other": "Browse other stones"
  },
  "types": {
   "vong-co": "Necklace",

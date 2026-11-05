@@ -1,0 +1,79 @@
+{
+ "_ghi_chu": "Doan gioi thieu cho trang rieng cua tung loai da (/san-pham/<loai-da>/). Khoa = ten loai da tieng Viet nhu trong data (vd 'Thach anh tim'). Loai da co tu 3 san pham tro len moi co trang rieng; thieu doan gioi thieu thi build dung cau mac dinh.",
+ "Aquamarine": {
+  "vi": "Aquamarine là một biến thể của khoáng vật beryl, mang sắc xanh nhạt như nước biển nông nhờ một lượng nhỏ sắt. Tên gọi đến từ tiếng Latin \"aqua marina\" (nước biển), và đây là đá của tháng Ba. Ở Gemsland, aquamarine thường được giữ nguyên dáng thanh tinh thể thô rồi bắt khoen, quấn bạc hoặc thắt lưới macramé.",
+  "en": "Aquamarine is a variety of the mineral beryl, coloured a pale sea blue by traces of iron. Its name comes from the Latin \"aqua marina\" (sea water), and it is the birthstone for March. At Gemsland, aquamarine is usually kept as a raw crystal wand, then fitted with a silver bail, wrapped in silver wire or set in a macramé net."
+ },
+ "Labradorite": {
+  "vi": "Labradorite thuộc nhóm feldspar, nổi tiếng với hiệu ứng \"labradorescence\": khi xoay viên đá, mặt đá loé lên những mảng xanh lam, xanh lục, vàng hay cam. Đá được đặt theo tên vùng Labrador ở Canada, nơi nó được ghi nhận lần đầu. Mỗi viên có ánh màu riêng nên không món nào giống món nào.",
+  "en": "Labradorite is a feldspar mineral known for \"labradorescence\": as the stone turns, flashes of blue, green, gold or orange sweep across its surface. It is named after Labrador in Canada, where it was first described. Every stone flashes differently, so no two pieces are alike."
+ },
+ "Moonstone": {
+  "vi": "Moonstone (đá mặt trăng) là một dạng feldspar có ánh sáng mờ trôi trên bề mặt, gọi là \"adularescence\", giống ánh trăng trên mặt nước. Loại được ưa chuộng nhất có ánh xanh lam rõ trên nền gần trong suốt. Moonstone là một trong các đá của tháng Sáu; đá khá mềm nên nên tránh va đập.",
+  "en": "Moonstone is a feldspar with a soft glow that floats across its surface, called \"adularescence\", like moonlight on water. The most loved stones show a strong blue sheen over an almost clear body. Moonstone is one of the birthstones for June; it is fairly soft, so it is best kept away from knocks."
+ },
+ "Opal": {
+  "vi": "Opal là silica ngậm nước, có khả năng \"chơi màu\": những đốm lửa đỏ, cam, xanh thay đổi theo góc nhìn. Gemsland có opal Ethiopia và opal đen, mỗi viên một kiểu lửa riêng. Opal là đá của tháng Mười; đá khá nhạy nên tránh va đập và thay đổi nhiệt độ đột ngột.",
+  "en": "Opal is a hydrated form of silica that shows \"play of colour\": flashes of red, orange, green and blue that shift as you move it. Gemsland carries Ethiopian and black opals, each with its own fire. Opal is the birthstone for October; it is delicate, so avoid knocks and sudden temperature changes."
+ },
+ "Mã não": {
+  "vi": "Mã não (agate) là một dạng chalcedony, tức thạch anh vi tinh thể, nổi bật với những vân dải đồng tâm hình thành qua hàng triệu năm. Gemsland có lát mã não, hốc geode và hộp nhẫn làm từ mã não: mỗi lát có vân riêng, đẹp để bày hoặc làm quà.",
+  "en": "Agate is a form of chalcedony, a microcrystalline quartz, known for concentric bands formed over millions of years. Gemsland has agate slices, geodes and ring boxes carved from agate: every slice has its own pattern, lovely to display or to give."
+ },
+ "Citrine": {
+  "vi": "Citrine (thạch anh vàng) là thạch anh có màu vàng chanh đến cam mật ong. Đây là một trong các đá của tháng Mười Một, đủ cứng để đeo hằng ngày. Gemsland có citrine thô dạng cụm tinh thể và mặt dây citrine trên xích bạc.",
+  "en": "Citrine is a quartz ranging from lemon yellow to honey orange. It is one of the birthstones for November and hard enough for everyday wear. Gemsland has raw citrine clusters as well as citrine pendants on silver chains."
+ },
+ "Thạch anh": {
+  "vi": "Thạch anh (quartz) là một trong những khoáng vật phổ biến nhất trên Trái Đất, cứng (độ cứng 7) và có rất nhiều biến thể màu sắc. Mục này gồm các món thạch anh không thuộc riêng nhóm tím, trắng, khói hay hồng, cả dạng tinh thể thô lẫn trang sức bạc.",
+  "en": "Quartz is one of the most common minerals on Earth, hard (7 on the Mohs scale) and found in many colours. This collection gathers quartz pieces outside the amethyst, clear, smoky and rose groups, from raw crystals to silver jewelry."
+ },
+ "Thạch anh tím": {
+  "vi": "Thạch anh tím (amethyst) là thạch anh có sắc tím từ nhạt như hoa oải hương đến tím đậm. Đây là đá của tháng Hai. Gemsland có hốc thạch anh tím để bày và vòng tay amethyst; nên tránh để đá dưới nắng gắt lâu vì màu có thể nhạt dần.",
+  "en": "Amethyst is quartz in shades from pale lavender to deep violet, and the birthstone for February. Gemsland has amethyst geodes for display and amethyst bracelets; keep it out of strong sunlight for long periods, as the colour can fade."
+ },
+ "Garnet": {
+  "vi": "Garnet (ngọc hồng lựu) là một nhóm khoáng vật, quen thuộc nhất với sắc đỏ thẫm như hạt lựu, dù garnet còn có cả màu cam, xanh lục. Đây là đá của tháng Một, khá cứng và hợp làm vòng, nhẫn đeo hằng ngày.",
+  "en": "Garnet is a group of minerals best known for a deep pomegranate red, though garnets also come in orange and green. It is the birthstone for January, fairly hard, and well suited to everyday bracelets and rings."
+ },
+ "Thạch anh trắng": {
+  "vi": "Thạch anh trắng (clear quartz, còn gọi là pha lê tự nhiên) là thạch anh không màu, trong suốt. Gemsland có cụm tinh thể và vòng tay thạch anh trắng; nhiều viên có vết nứt bên trong tạo hiệu ứng cầu vồng khi gặp ánh sáng.",
+  "en": "Clear quartz, also called rock crystal, is colourless, transparent quartz. Gemsland has clear quartz clusters and bracelets; many pieces hold tiny inner fractures that throw rainbows when the light hits them."
+ },
+ "Thạch anh khói": {
+  "vi": "Thạch anh khói (smoky quartz) là thạch anh có màu nâu khói đến xám đen, hình thành tự nhiên trong lòng đất. Sắc trầm và trong của đá hợp với bạc, cũng đẹp khi để nguyên dạng tinh thể thô.",
+  "en": "Smoky quartz is quartz in shades from smoky brown to grey-black, formed naturally underground. Its deep, clear tone suits silver well and is just as striking left as a raw crystal."
+ },
+ "Peridot": {
+  "vi": "Peridot là dạng đá quý của khoáng vật olivine, mang màu xanh lục ánh vàng tươi, thường được tìm thấy trong đá núi lửa. Đây là đá của tháng Tám.",
+  "en": "Peridot is the gem form of the mineral olivine, a bright yellow-green often found in volcanic rock. It is the birthstone for August."
+ },
+ "Topaz": {
+  "vi": "Topaz là khoáng vật rất cứng (độ cứng 8), trong và lấp lánh, có nhiều màu từ không màu, xanh dương đến vàng. Đây là một trong các đá của tháng Mười Một, bền để đeo hằng ngày.",
+  "en": "Topaz is a very hard mineral (8 on the Mohs scale), clear and brilliant, found in colours from colourless and blue to golden. It is one of the birthstones for November and durable enough for daily wear."
+ },
+ "Tourmaline": {
+  "vi": "Tourmaline có dải màu phong phú bậc nhất trong các loại đá quý: hồng, xanh lục, đen, và cả những tinh thể nhiều màu như \"dưa hấu\". Đây là một trong các đá của tháng Mười.",
+  "en": "Tourmaline has one of the widest colour ranges of any gemstone: pink, green, black, and even multi-coloured \"watermelon\" crystals. It is one of the birthstones for October."
+ },
+ "Apatite": {
+  "vi": "Apatite là khoáng vật phosphate, nổi bật với màu xanh ngọc rực. Tên gọi đến từ tiếng Hy Lạp \"apatao\" (đánh lừa) vì đá hay bị nhầm với khoáng vật khác. Apatite khá mềm nên hợp với mặt dây hơn nhẫn.",
+  "en": "Apatite is a phosphate mineral known for its vivid blue-green. The name comes from the Greek \"apatao\" (to deceive), as it was often mistaken for other minerals. Apatite is fairly soft, so it suits pendants better than rings."
+ },
+ "Thạch anh hồng": {
+  "vi": "Thạch anh hồng (rose quartz) là thạch anh màu hồng phấn dịu, thường hơi đục như sương. Đá đẹp khi mài giọt hoặc làm mặt dây đơn giản.",
+  "en": "Rose quartz is quartz in a soft powder pink, often slightly cloudy. It looks lovely cut as a teardrop or worn as a simple pendant."
+ },
+ "Fluorite": {
+  "vi": "Fluorite là khoáng vật có màu tím, xanh lục xen kẽ thành dải, tinh thể thường có dạng khối hoặc bát diện. Đá khá mềm nên thích hợp để bày.",
+  "en": "Fluorite is a mineral with alternating bands of purple and green, often forming cubic or octahedral crystals. It is fairly soft, so it is best kept for display."
+ },
+ "Kyanite": {
+  "vi": "Kyanite có màu xanh dương đậm với các thớ dọc dạng lưỡi, đặc biệt ở chỗ độ cứng khác nhau theo từng chiều của tinh thể.",
+  "en": "Kyanite is a deep blue mineral with long, blade-like crystals; unusually, its hardness differs along different directions of the crystal."
+ },
+ "Lepidolite": {
+  "vi": "Lepidolite là khoáng vật mica có màu tím hoa cà, lấp lánh nhẹ nhờ các lớp vảy mỏng bên trong.",
+  "en": "Lepidolite is a lilac mica mineral with a gentle shimmer from the thin flakes inside it."
+ }
+}

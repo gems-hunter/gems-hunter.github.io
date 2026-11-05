@@ -40,7 +40,7 @@ class SeoTest(unittest.TestCase):
 
     def test_sitemap(self):
         x = (ROOT / "sitemap.xml").read_text(encoding="utf8")
-        self.assertEqual(len(re.findall(r"<loc>", x)), 4)
+        self.assertEqual(len(re.findall(r"<loc>", x)), 4 + 2 * len(build.stone_pages()))
         self.assertIn('xmlns:xhtml="http://www.w3.org/1999/xhtml"', x)
         for block in re.findall(r"<url>.*?</url>", x, re.S):
             self.assertEqual(len(re.findall(r"<xhtml:link ", block)), 2)
@@ -91,6 +91,23 @@ class SeoTest(unittest.TestCase):
         self.assertNotIn("-480.webp", x)
         self.assertIn('<meta name="robots" content="noindex">', page("404.html"))
         self.assertIn("Disallow: /*?feedback", (ROOT / "robots.txt").read_text(encoding="utf8"))
+
+
+    def test_stone_pages(self):
+        pages = build.stone_pages()
+        self.assertGreaterEqual(len(pages), 5)
+        st, info = next(iter(pages.items()))
+        for lang in ("vi", "en"):
+            path = info[lang]
+            h = page(path.strip("/") + "/index.html")
+            self.assertIn(f'<link rel="canonical" href="{SITE}{path}">', h)
+            self.assertEqual(dict(alternates(h))["vi"], SITE + info["vi"])
+            self.assertEqual(dict(alternates(h))["en"], SITE + info["en"])
+            self.assertIn(f'data-stone="', h)
+            self.assertEqual(h.count('<li class="item"'), info["count"])
+            self.assertIn('"@type": "BreadcrumbList"', h)
+        # trang tat ca: chip loai da la link toi trang rieng
+        self.assertIn(f'href="..{info["vi"]}" data-f-stone=', page("san-pham/index.html"))
 
 
 if __name__ == "__main__":
