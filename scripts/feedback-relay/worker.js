@@ -1,5 +1,6 @@
 // Cloudflare Worker cho che do ?feedback cua site:
-//   POST /         -> chuyen gop y sang Telegram + ghi vao GitHub issue (issue mo moi nhat co nhan `feedback`, chua co thi tao)
+//   POST /         -> chuyen gop y sang Telegram; kem dung ma bi mat thi ghi them vao GitHub issue
+//                     (issue mo moi nhat co nhan `feedback`, chua co thi tao) -> Claude sua code va mo PR
 //   POST /upload   -> nhan anh + thong tin san pham moi, tao nhanh inbox/... va mo Pull Request tren GitHub
 //                     (Claude tren GitHub Actions se xu ly PR, xem .github/workflows/claude-inbox.yml va CLAUDE.md)
 // Token va mat khau deu nam o day (secret), khong nam trong code tren site.
@@ -52,13 +53,17 @@ export default {
     const text = String(body.text || "").trim();
     if (!text) return reply(400, "Empty");
     // GitHub issue truoc (de gui kem link vao Telegram); loi o day khong lam hong viec gui Telegram
-    let issue = null;
-    if (env.GITHUB_TOKEN) {
-      try { issue = await feedbackIssue(env, title, text); } catch (e) { console.error("issue", e); }
+    // Chi ghi vao GitHub khi kem dung ma bi mat: issue `feedback` kich hoat Claude sua code (claude-feedback.yml),
+    // nen khong de ai biet link ?feedback cung gui lenh vao duoc.
+    let issue = null, issueSkipped = null;
+    if (!env.GITHUB_TOKEN) issueSkipped = "no_token";
+    else if (!env.UPLOAD_CODE || !sameText(String(body.code || ""), env.UPLOAD_CODE)) issueSkipped = "no_code";
+    else {
+      try { issue = await feedbackIssue(env, title, text); } catch (e) { console.error("issue", e); issueSkipped = "github_error"; }
     }
     const r = await telegram(env, title, issue ? `${text}\n\nGitHub: ${issue.url}` : text);
     if (!r.ok && !issue) return reply(502, "Telegram error " + r.status);
-    return json(200, { ok: true, telegram: r.ok, issue });
+    return json(200, { ok: true, telegram: r.ok, issue, issue_skipped: issueSkipped });
   },
 };
 

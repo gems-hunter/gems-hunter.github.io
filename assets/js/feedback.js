@@ -32,6 +32,7 @@ const TEXT = {
     ok: (n, p) => `Đã gửi ${n} góp ý từ ${p} trang. Cảm ơn bạn!`,
     fail: "Gửi chưa được, góp ý vẫn được giữ lại. Thử lại sau nhé.",
     noChannel: "Chưa cấu hình nơi nhận góp ý (email/Telegram).",
+    needCode: "Lần này góp ý chỉ gửi qua Telegram. Để lần sau góp ý vào GitHub và Claude tự sửa, hãy gửi một sản phẩm qua form “Thêm sản phẩm” (mã bí mật sẽ được nhớ).",
   },
   en: {
     on: "Feedback mode: click the icon at the bottom right to pick what to change. To switch pages, close the toolbar, navigate, then open it again. Notes from every page are sent together.",
@@ -39,6 +40,7 @@ const TEXT = {
     ok: (n, p) => `Sent ${n} notes from ${p} pages. Thank you!`,
     fail: "Couldn't send. Your notes are kept, please try again.",
     noChannel: "No feedback destination (email/Telegram) is configured.",
+    needCode: "This time it went to Telegram only. To send future feedback to GitHub for Claude to fix, submit one product via “Add product” (the secret code is then remembered).",
   },
 };
 const T = () => TEXT[lang()];
@@ -139,13 +141,16 @@ async function sendTelegram(subject, text) {
   const r = await fetch(CONFIG.telegramRelay, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title: subject, text }),
+    // ma bi mat (luu tu form Them san pham): co ma thi worker ghi them vao GitHub issue -> Claude tu sua
+    body: JSON.stringify({ title: subject, text, code: savedCode() }),
   });
   if (!r.ok) throw new Error("telegram: " + r.status);
   const j = await r.json().catch(() => ({}));
-  lastIssue = j.issue || null; // worker ghi them vao GitHub issue (nhan `feedback`)
+  lastIssue = j.issue || null;
+  issueSkipped = j.issue_skipped || null;
 }
-let lastIssue = null;
+let lastIssue = null, issueSkipped = null;
+const savedCode = () => { try { return localStorage.getItem("gh-upload-code") || ""; } catch (e) { return ""; } };
 
 async function onSubmit(_output, current) {
   const senders = [];
@@ -164,6 +169,7 @@ async function onSubmit(_output, current) {
   if (res.every((r) => r.status === "rejected")) { toast(T().fail, 8000, "alert"); throw new Error("all feedback channels failed"); }
 
   toast(T().ok(n, all.size) + (lastIssue ? ` (GitHub issue #${lastIssue.number})` : ""));
+  if (issueSkipped === "no_code") setTimeout(() => toast(T().needCode, 9000, "alert"), 600);
   // gui xong: xoa ghi chu moi trang; trang hien tai nap lai Agentation sau khi no hien dau "da gui"
   for (const path of all.keys()) localStorage.removeItem(STORE + path);
   setTimeout(() => { localStorage.removeItem(STORE + location.pathname); remount(false); }, 1600);
