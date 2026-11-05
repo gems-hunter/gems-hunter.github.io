@@ -107,7 +107,7 @@ def build_home(lang):
         tab_lines.append(f'    <button role="tab" aria-selected="{sel}"{ti} data-k="{i}">{e(p["tab"])}</button>')
     tabs = "\n".join(tab_lines)
     website = {"@type": "WebSite", "@id": f"{SITE_URL}/#website", "name": "Gemsland",
-               "alternateName": ["Gems Land", "Gems Hunter"], "url": f"{SITE_URL}/",
+               "alternateName": ["Gems Land", "Gems Hunter", SITE_URL.split("//")[1]], "url": f"{SITE_URL}/",
                "inLanguage": list(LANGS), "publisher": {"@id": f"{SITE_URL}/#store"}}
     ld = {"@type": "JewelryStore", "@id": f"{SITE_URL}/#store", "name": "Gemsland",
           "url": f"{SITE_URL}{path}", "inLanguage": S["meta.lang"], "currenciesAccepted": "VND",
@@ -122,7 +122,10 @@ def build_home(lang):
         "PK_RAW_ALT": e(picker[0]["raw_alt"]), "PK_MADE_ALT": e(picker[0]["made_alt"]),
         "PK_RAW_LABEL": e(picker[0]["raw_label"]), "PK_MADE_LABEL": e(picker[0]["made_label"]),
         "PK_SAY": e(picker[0]["say"]), "RAW_TYPE_Q": quote(raw_type),
-        "JSONLD": json.dumps({"@context": "https://schema.org", "@graph": [website, ld]}, ensure_ascii=False),
+        # WebSite de rieng mot khoi nhu mau cua Google cho "ten trang web" (site name) tren ket qua tim kiem
+        "JSONLD": json.dumps({"@context": "https://schema.org", **website}, ensure_ascii=False)
+                  + '</script>\n<script type="application/ld+json">'
+                  + json.dumps({"@context": "https://schema.org", **ld}, ensure_ascii=False),
         "JS": i18n.js_payload(S),
     })
     tpl = (TPL / "home.html").read_text(encoding="utf8")

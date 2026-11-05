@@ -80,8 +80,8 @@ class SeoTest(unittest.TestCase):
 
     def test_home_jsonld_graph(self):
         import json
-        m = re.search(r'<script type="application/ld\+json">(.*?)</script>', page("index.html"), re.S)
-        types = {n["@type"] for n in json.loads(m.group(1))["@graph"]}
+        blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', page("index.html"), re.S)
+        types = {json.loads(b)["@type"] for b in blocks}
         self.assertEqual(types, {"WebSite", "JewelryStore"})
 
     def test_image_sitemap_404_robots(self):
