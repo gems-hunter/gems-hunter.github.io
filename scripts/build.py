@@ -478,7 +478,10 @@ def build_seo_files():
             xml.append("  </url>")
     xml.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(xml) + "\n", encoding="utf8")
-    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\nDisallow: /i18n/\nDisallow: /*?feedback\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf8")
+    # ban .txt (moi dong mot URL): Search Console doc duoc ca hai, dung khi ban XML bao "Khong the tim nap"
+    urls = [f"{SITE_URL}{LANGS[l][page]}" for page in LANGS["vi"] for l in LANGS]
+    (ROOT / "sitemap.txt").write_text("\n".join(urls) + "\n", encoding="utf8")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /scripts/\nDisallow: /data/\nDisallow: /i18n/\nDisallow: /*?feedback\n\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/sitemap.txt\n", encoding="utf8")
 
 
 if __name__ == "__main__":

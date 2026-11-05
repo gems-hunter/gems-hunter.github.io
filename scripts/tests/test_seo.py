@@ -91,6 +91,10 @@ class SeoTest(unittest.TestCase):
         self.assertNotIn("-480.webp", x)
         self.assertIn('<meta name="robots" content="noindex">', page("404.html"))
         self.assertIn("Disallow: /*?feedback", (ROOT / "robots.txt").read_text(encoding="utf8"))
+        txt = (ROOT / "sitemap.txt").read_text(encoding="utf8").split()
+        self.assertEqual(len(txt), len(re.findall(r"<loc>", x)))
+        self.assertTrue(all(u.startswith(SITE + "/") for u in txt))
+        self.assertIn("Sitemap: https://gemsland.github.io/sitemap.txt", (ROOT / "robots.txt").read_text(encoding="utf8"))
 
 
     def test_stone_pages(self):

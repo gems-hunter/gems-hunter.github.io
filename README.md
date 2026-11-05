@@ -49,6 +49,7 @@ Nếu hai file lệch key, build sẽ báo lỗi.
 - Mỗi sản phẩm nằm sẵn trong HTML (không render bằng JS), có `alt`, ảnh webp lazy-load, `srcset`.
 - `<html lang>`, `<title>`, meta description, canonical, Open Graph (`og:locale` và `og:locale:alternate`), `hreflang` vi/en/x-default.
 - JSON-LD: JewelryStore ở trang chủ; CollectionPage + ItemList + Breadcrumb ở trang sản phẩm, có `inLanguage`.
+- `sitemap.txt`: bản văn bản (mỗi dòng một URL) của sitemap, khai báo cả trong `robots.txt`.
 - `sitemap.xml` liệt kê 4 URL, có `xhtml:link` chéo giữa hai ngôn ngữ. `robots.txt` chặn `/scripts/`, `/data/`, `/i18n/`.
 - Tên miền `https://gemsland.github.io`, đặt ở `SITE_URL` trong `scripts/build.py`.
 
